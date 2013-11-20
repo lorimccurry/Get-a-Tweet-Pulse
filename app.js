@@ -1,21 +1,26 @@
 var express = require('express');
 var mongoose = require('mongoose');
+var Twit = require('twit');
+
 
 // model definitions
 require('require-dir')('./models');
+var Tweet = mongoose.model('Tweet');
 
 // route definitions
-var home = require('./routes/home');
+// var home = require('./routes/home');
+var tweets = require('./routes/tweets');
 
 var app = express();
 var RedisStore = require('connect-redis')(express);
-mongoose.connect('mongodb://localhost/name-of-database');
+mongoose.connect('mongodb://localhost/twitter-map');
 
 // configure express
 require('./config').initialize(app, RedisStore);
 
 // routes
-app.get('/', home.index);
+// app.get('/', home.index);
+app.get('/', tweets.index);
 
 // start server & socket.io
 var common = require('./sockets/common');

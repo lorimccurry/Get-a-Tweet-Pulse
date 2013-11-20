@@ -1,5 +1,59 @@
-@base: #f938ab;
+@base: #292929;
+
+
+//----------------OVERALL------------------//
 
 body{
-  background-color: @base;
+  // background-color: @base;
+  background-image: url('../images/cartographer.png');
 }
+
+html, body, #map-row, #map-container, #map-canvas{
+  height: 100%;
+}
+
+.hidden{
+  display: none;
+}
+//----------------END OVERALL------------------//
+
+
+
+//----------------NAV------------------//
+// .top-bar, .contain-to-grid{
+//   background: rgb(30, 117, 171) !important;
+// }
+
+//----------------END NAV------------------//
+
+
+
+
+//----------------MAP------------------//
+
+#map-canvas{
+  width: 100%;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+//----------------END MAP------------------//
+
+
+
+//----------------INPUT/CONTROLS/STATS------------------//
+#query{
+  fieldset{
+    border: 1px solid rgb(6,101,145);
+    legend{
+      background: none;
+      color: white;
+    }
+  }
+}
+
+#stats{
+  border: 1px solid rgb(6,101,145);
+  color: white;
+}
+//----------------END INPUT/CONTROLS/STATS------------------//

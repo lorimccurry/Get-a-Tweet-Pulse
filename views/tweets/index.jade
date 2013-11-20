@@ -1,0 +1,21 @@
+extends ../template/layout
+include ../mixins/form-helper
+
+
+block content
+  .row#map-row
+    .small-9.columns#map-container
+      #map-canvas
+    .small-3.columns
+      include form-query
+      button#stop.small.alert.radius Stop
+      button#reset.small.success.radius Reset
+      #stats Stats placeholder
+  //- .row
+  //-   #controls
+  //-     .small-2.small-offset-8.columns: button#stop.small.alert.radius Stop
+  //-     .small-2.columns: button#reset.small.success.radius Reset
+  //- .row
+  //-   #stats
+  //-     .small-4.small-offset-8.columns
+

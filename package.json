@@ -18,7 +18,8 @@
     "socket.io": "*",
     "connect-redis": "*",
     "require-dir": "*",
-    "bcrypt": "*"
+    "bcrypt": "*",
+    "twit": "*"
   },
   "devDependencies": {
     "grunt": "*",

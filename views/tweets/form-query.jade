@@ -1,0 +1,7 @@
+form#query(action='/', method='post')
+  fieldset
+    legend Query
+    .row
+      mixin field(12, 'text', 'tweet-text', 'Hashtag, Word, or Phrase', null, '#bieber, bieber, justin bieber', true)
+    .row
+      .small-6.columns: button#start.radius.small.expand Get a Pulse
