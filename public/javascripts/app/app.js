@@ -20,6 +20,7 @@ function clickPulse(event){
   socket.emit('startsearch', {query:query});
   $(this).addClass('hidden');
   event.preventDefault();
+
 }
 
 
