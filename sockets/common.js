@@ -4,7 +4,6 @@ var Twit = require('twit');
 var express = require('express');
 var mongoose = require('mongoose');
 var Tweet = mongoose.model('Tweet');
-var Twit = require('twit');
 var io;
 
 exports.connection = function(socket){
@@ -19,14 +18,16 @@ exports.connection = function(socket){
   var stream = null;
 
   socket.on('disconnect', function(){
-   // stream.close()
+   // stream.stop()
   });
+
   socket.on('startsearch', function(data){
-    console.log(data)
+    // console.log(data)
     stream = T.stream('statuses/filter', { track: data.query, lang: 'en' , geo_enabled: true});
     stream.on('tweet', function (tweet) {
       if(tweet.geo) {
-        //console.log(tweet);
+        // console.log(tweet.place.full_name); //full name and name don't always have data, so the function kicks out at that point
+        // console.log(tweet.place.name);
         var newTweet = new Tweet({
           geo: tweet.geo.coordinates,
           screen_name: tweet.user.screen_name,
@@ -35,33 +36,23 @@ exports.connection = function(socket){
           text: tweet.text,
           profile_image_url: tweet.user.profile_image_url,
           //place_name: tweet.place.name,
-          //place_full_name: tweet.place.full_name
+          place_full_name: tweet.place.full_name ? tweet.place.full_name:null
         });
-        newTweet.save(function(err, newTweet){
+        newTweet.save(function(err, result){
 
           // Send to sockets
           if (err){
             console.log('Error: ' + err.message);
           } else {
             console.log('inserted into database');
-            socket.emit("newTweet",{
-              geo: tweet.geo.coordinates,
-              screen_name: tweet.user.screen_name,
-              name: tweet.user.name,
-              lang: tweet.lang,
-              text: tweet.text,
-              profile_image_url: tweet.user.profile_image_url
-              //place_name: tweet.place.name,
-              //place_full_name: tweet.place.full_name
-            })
+            socket.emit('newTweet', result);
           }
         });
-
       }
     });
 
     stream.on('tweet', function (tweet) {
-      //console.log('TWWEETTY!***************************');
+      // console.log('TWWEETTY!***************************');
     });
 
     stream.on('delete', function (deleteMessage) {
@@ -70,39 +61,25 @@ exports.connection = function(socket){
     });
 
     stream.on('scrub_geo', function (scrubGeoMessage) {
-      console.log('SCRUB GEO ' + scrubGeoMessage);
+      console.log('SCRUB GEO ' , scrubGeoMessage);
     });
 
     stream.on('limit', function (limitMessage) {
-      console.log('LIMIT MESSAGE ' + limitMessage);
+      console.log('LIMIT MESSAGE ' , limitMessage);
     });
 
     stream.on('disconnect', function (disconnectMessage) {
-      console.log('DISCONNECT MESSSAGE ' + disconnectMessage);
+      console.log('DISCONNECT MESSSAGE ' , disconnectMessage);
     });
 
     stream.on('connect', function (request) {
       console.log('CONNECT ATTEMPT ' , request);
     });
   });
-
 };
 
 function socketStartSearch(data){
-
   console.log('this is the socket', data);
-
-
-
-
-//   function(query,fn){m.newQuery(query,fn);
-// }
-
-// new Tweet({name: data.name}).save(function(err, tweet){
-//     Tweet.findById(tweet.id).populate('query').exec(function(err, tweet){
-//       console.log('created new tweet');
-//     });
-//   });
 }
 
 function socketDisconnect(){

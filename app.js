@@ -21,6 +21,7 @@ require('./config').initialize(app, RedisStore);
 // routes
 // app.get('/', home.index);
 app.get('/', tweets.index);
+app.get('/tweet/:id', tweets.show);
 
 // start server & socket.io
 var common = require('./sockets/common');

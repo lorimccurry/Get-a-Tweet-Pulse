@@ -9,6 +9,7 @@ function initialize(){
   initializeSocketIO();
   initMap(40, -95, 4);
   $('#start').on('click', clickPulse);
+  $('#stop').on('click', clickStop);
 }
 
 //------------------------------------------------------------------//
@@ -18,12 +19,13 @@ function clickPulse(event){
   // debugger;
   var query = $(this).parents('fieldset').find('input').val(); //targets the input data
   socket.emit('startsearch', {query:query});
-  $(this).addClass('hidden');
+  // $(this).addClass('hidden');
   event.preventDefault();
-
 }
 
-
+// function clickStop(event){
+//   socket.emit('stopsearch', {});
+// }
 
 //------------------------------------------------------------------//
 //------------------------------------------------------------------//
@@ -44,9 +46,17 @@ function initializeSocketIO(){
 
   socket = io.connect(url);
   socket.on('connected', socketConnected);
-  // socket.on('startsearch', socketStartSearch);
+  socket.on('newTweet', socketNewTweet);
 }
 
 function socketConnected(data){
   console.log(data);
+}
+
+function socketNewTweet(data){
+  $('#data').append('<p><a href="/tweet/'+data._id+'">'+data.screen_name+'</a></p>');
+  console.log(data.full_name);
+
+
+
 }
