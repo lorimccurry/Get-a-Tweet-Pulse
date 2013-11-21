@@ -10,6 +10,7 @@ function initialize(){
   initMap(40, -95, 4);
   $('#start').on('click', clickPulse);
   $('#stop').on('click', clickStop);
+  $('#resume').on('click', clickResume);
 }
 
 //------------------------------------------------------------------//
@@ -19,14 +20,24 @@ function clickPulse(event){
   // debugger;
   var query = $(this).parents('fieldset').find('input').val(); //targets the input data
   socket.emit('startsearch', {query:query});
-  // $(this).addClass('hidden');
+  $(this).addClass('hidden');
   event.preventDefault();
+  $('#status').text('');
+  $('#status').text('Searching Tweets');
 }
 
-// function clickStop(event){
-//   socket.emit('stopsearch', {});
-// }
+function clickStop(event){
+  socket.emit('stopsearch', {});
+}
 
+function clickResume(event){
+  // debugger;
+  var query = $('#user-query').val();
+  // socket.emit('resumesearch', {query: query});
+  socket.emit('startsearch', {query:query});
+  $('#status').text('');
+  $('#status').text('Search Resumed');
+}
 //------------------------------------------------------------------//
 //------------------------------------------------------------------//
 //------------------------------------------------------------------//
@@ -47,6 +58,8 @@ function initializeSocketIO(){
   socket = io.connect(url);
   socket.on('connected', socketConnected);
   socket.on('newTweet', socketNewTweet);
+  socket.on('streamstopped', socketStreamStopped);
+  // socket.on('streamresumed', socketStreamResumed);
 }
 
 function socketConnected(data){
@@ -54,9 +67,20 @@ function socketConnected(data){
 }
 
 function socketNewTweet(data){
-  $('#data').append('<p><a href="/tweet/'+data._id+'">'+data.screen_name+'</a></p>');
-  console.log(data.full_name);
+  console.log(data);
+  $('#data').append('<div><img src="' + data.profile_image_url + '"></div>');
+  // console.log(data.full_name);
+  console.log(data);
+}
 
+function socketStreamStopped(data){
+  console.log(data);
+  $('#status').text('');
+  $('#status').text('Search Stopped');
+}
 
-
+function socketStreamResumed(data){
+  console.log(data);
+  $('#status').text('');
+  $('#status').text('Search Resumed');
 }

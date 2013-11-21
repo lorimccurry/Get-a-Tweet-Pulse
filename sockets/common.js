@@ -12,13 +12,22 @@ exports.connection = function(socket){
   socket.emit('connected', {status: 'connected'});
 
   var T = new Twit({
-
+    consumer_key: 'qjFfLTPvNYFGMMUlZuQ5cQ', //ENV['SECRET']
+    consumer_secret: 'iQYnUO6gsYPem9fYs0nOmT9fDw2JKPfb11WTvAg5tTM',
+    access_token: '130018142-Yi20QwrR1q23JWrb25I1WCYn1MNMnXRZJMSdB0W6',
+    access_token_secret: 'hUgumhMlbU4xyTOQC0dvxf9pdTrmJ1bIPYHMuMlvt3Lm7'
   });
   // locations: ['122.75','36.8','-121.75','37.8']
   var stream = null;
 
-  socket.on('disconnect', function(){
-   // stream.stop()
+  socket.on('stopsearch', function(){
+    stream.stop();
+    socket.emit('streamstopped', {status: 'stream stopped'});
+  });
+
+  socket.on('resumesearch', function(){
+    stream.start();
+    socket.emit('streamresumed', {status: 'stream resumed'});
   });
 
   socket.on('startsearch', function(data){
@@ -36,7 +45,7 @@ exports.connection = function(socket){
           text: tweet.text,
           profile_image_url: tweet.user.profile_image_url,
           //place_name: tweet.place.name,
-          place_full_name: tweet.place.full_name ? tweet.place.full_name:null
+          place_full_name: tweet.place ? tweet.place.full_name:null
         });
         newTweet.save(function(err, result){
 

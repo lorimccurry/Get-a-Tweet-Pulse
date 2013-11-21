@@ -8,8 +8,11 @@ block content
       #map-canvas
     .small-3.columns
       include form-query
-      button#stop.small.alert.radius Stop
-      button#reset.small.success.radius Reset
+      #controls
+        h3#status
+        button#stop.small.alert.radius Stop
+        button#resume.small.success.radius Resume
+        button#reset.small.radius Clear
       #stats Stats placeholder
         h2#user-query Test
       #data
