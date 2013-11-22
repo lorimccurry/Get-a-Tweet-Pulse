@@ -20,7 +20,7 @@ function clickPulse(event){
   // debugger;
   var query = $(this).parents('fieldset').find('input').val(); //targets the input data
   socket.emit('startsearch', {query:query});
-  $(this).addClass('hidden');
+  // $(this).addClass('hidden');
   event.preventDefault();
   $('#status').text('');
   $('#status').text('Searching Tweets');
@@ -67,10 +67,16 @@ function socketConnected(data){
 }
 
 function socketNewTweet(data){
-  console.log(data);
-  $('#data').append('<div><img src="' + data.profile_image_url + '"></div>');
+  console.log(data.geo);
+  console.log(data.text);
+  // $('#data').append('<div><img src="' + data.profile_image_url + '"></div>');
   // console.log(data.full_name);
-  console.log(data);
+  // var marker = new google.maps.Marker({
+  //   position: data.geo,
+  //   title: data.screen_name + ': ' + data.text
+  // });
+  // marker.setMap(map);
+
 }
 
 function socketStreamStopped(data){

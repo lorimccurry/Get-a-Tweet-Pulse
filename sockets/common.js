@@ -12,10 +12,7 @@ exports.connection = function(socket){
   socket.emit('connected', {status: 'connected'});
 
   var T = new Twit({
-    consumer_key: 'qjFfLTPvNYFGMMUlZuQ5cQ', //ENV['SECRET']
-    consumer_secret: 'iQYnUO6gsYPem9fYs0nOmT9fDw2JKPfb11WTvAg5tTM',
-    access_token: '130018142-Yi20QwrR1q23JWrb25I1WCYn1MNMnXRZJMSdB0W6',
-    access_token_secret: 'hUgumhMlbU4xyTOQC0dvxf9pdTrmJ1bIPYHMuMlvt3Lm7'
+
   });
   // locations: ['122.75','36.8','-121.75','37.8']
   var stream = null;
@@ -32,7 +29,11 @@ exports.connection = function(socket){
 
   socket.on('startsearch', function(data){
     // console.log(data)
-    stream = T.stream('statuses/filter', { track: data.query, lang: 'en' , geo_enabled: true});
+    var options = { locations: [-180,-90,180,90]}
+    if(data.query){
+      options['track'] = data.query
+    }
+    stream = T.stream('statuses/filter', options);
     stream.on('tweet', function (tweet) {
       if(tweet.geo) {
         // console.log(tweet.place.full_name); //full name and name don't always have data, so the function kicks out at that point
