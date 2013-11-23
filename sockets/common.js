@@ -29,10 +29,22 @@ exports.connection = function(socket){
 
   socket.on('startsearch', function(data){
     // console.log(data)
-    var options = { locations: [-180,-90,180,90]}
+    var options = [];
+    // var options = { track: data.query, locations: [-180,-90,180,90]}; //NEED TO COME BACK TO THIS - NOT FILTERING W/O IT!!
+    // var options = { track: data.query}; //this doesnt work w/o criteria
+    // if(data.query){
+      // options['track'] = data.query;
+    // }
+    // options['locations'] = [-180,-90,180,90];
+
     if(data.query){
-      options['track'] = data.query
+      options['track'] = data.query;
+    } else {
+      options['locations'] = [-180,-90,180,90];
     }
+
+    console.log('These are OPTIONS: %%%%%%%%%%%%%%%%%%%%5 ', options);
+
     stream = T.stream('statuses/filter', options);
     stream.on('tweet', function (tweet) {
       if(tweet.geo) {
@@ -46,7 +58,8 @@ exports.connection = function(socket){
           text: tweet.text,
           profile_image_url: tweet.user.profile_image_url,
           //place_name: tweet.place.name,
-          place_full_name: tweet.place ? tweet.place.full_name:null
+          place_full_name: tweet.place ? tweet.place.full_name:null,
+          query: data.query
         });
         newTweet.save(function(err, result){
 

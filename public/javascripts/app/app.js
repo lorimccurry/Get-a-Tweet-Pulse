@@ -3,11 +3,12 @@
 $(document).ready(initialize);
 
 var socket;
+// var map;
 
 function initialize(){
   $(document).foundation();
   initializeSocketIO();
-  initMap(40, -95, 4);
+  initMap(40, -95, 1);
   $('#start').on('click', clickPulse);
   $('#stop').on('click', clickStop);
   $('#resume').on('click', clickResume);
@@ -24,6 +25,8 @@ function clickPulse(event){
   event.preventDefault();
   $('#status').text('');
   $('#status').text('Searching Tweets');
+  $('#query-text').text('');
+  $('#query-text').text(query);
 }
 
 function clickStop(event){
@@ -44,7 +47,7 @@ function clickResume(event){
 
 function initMap(lat, lng, zoom){
   var mapOptions = {center: new google.maps.LatLng(lat, lng), zoom: zoom, mapTypeId: google.maps.MapTypeId.ROADMAP};
-  var map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+  map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
 }
 
 
@@ -67,15 +70,21 @@ function socketConnected(data){
 }
 
 function socketNewTweet(data){
-  console.log(data.geo);
-  console.log(data.text);
+  console.log(data);
+  // console.log(data.text);
+
   // $('#data').append('<div><img src="' + data.profile_image_url + '"></div>');
   // console.log(data.full_name);
-  // var marker = new google.maps.Marker({
-  //   position: data.geo,
-  //   title: data.screen_name + ': ' + data.text
-  // });
-  // marker.setMap(map);
+  var myLatlng = new google.maps.LatLng(data.geo[0],data.geo[1]);
+  var marker = new google.maps.Marker({
+    position: myLatlng,
+    map: map,
+    title: data.screen_name + ': ' + data.text,
+    icon: data.profile_image_url
+  });
+  marker.setMap(map);
+
+  htmlMapStats(data);
 
 }
 
@@ -89,4 +98,12 @@ function socketStreamResumed(data){
   console.log(data);
   $('#status').text('');
   $('#status').text('Search Resumed');
+}
+
+//------------------------------------------------------------------//
+//------------------------------------------------------------------//
+//------------------------------------------------------------------//
+
+function htmlMapStats(data){
+
 }

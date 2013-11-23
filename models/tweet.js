@@ -22,7 +22,7 @@ var Tweet = mongoose.Schema({
   // type: String,
   // attributes: String, //this is the city street - don't know if i need this or not
 
-  // query: String,
+  query: String,
 
   createdAt     : {type: Date, default: Date.now}
 
