@@ -1,4 +1,6 @@
-@base: #292929;
+// @base: #292929;
+@baseFont: rgb(255,250,250);
+@baseBorder: rgb(6,101,145);
 
 //--------------------------------------------//
 //-----------------OVERALL--------------------//
@@ -11,7 +13,7 @@ body{
   background-image: url('../images/cartographer.png');
 }
 
-html, body, #map-row, #map-container, #map-canvas{
+html, body, #mapRow, #mapContainer, #map-canvas{
   height: 100%;
 }
 
@@ -63,8 +65,8 @@ html, body, #map-row, #map-container, #map-canvas{
 
 
 #stats, #controls{
-  border: 1px solid rgb(6,101,145);
-  color: white;
+  border: 1px solid @baseBorder;
+  color: @baseFont;
 }
 
 //---------END QUERY/CONTROLS/STATS-----------//
@@ -77,10 +79,10 @@ html, body, #map-row, #map-container, #map-canvas{
 
 #query{
   fieldset{
-    border: 1px solid rgb(6,101,145);
+    border: 1px solid @baseBorder;
     legend{
       background: none;
-      color: white;
+      color: @baseFont;
     }
   }
 }
@@ -95,8 +97,15 @@ html, body, #map-row, #map-container, #map-canvas{
 //--------------------------------------------//
 
 
-#status{
-  color: white;
+#status, #searchControls{
+  color: @baseFont;
+}
+
+#searchControls{
+  h5{
+    color: @baseFont;
+    font-weight: bolder;
+  }
 }
 
 #controls{
@@ -113,8 +122,8 @@ html, body, #map-row, #map-container, #map-canvas{
 //--------------------------------------------//
 
 
-#query-text{
-  color: white;
+#queryText{
+  color: @baseFont;
 }
 
 //----------------END STATS-------------------//

@@ -3,18 +3,22 @@ include ../mixins/form-helper
 
 
 block content
-  .row#map-row
-    .small-9.columns#map-container
+  .row#mapRow
+    .small-9.columns#mapContainer
       #map-canvas
     .small-3.columns
       include form-query
       #controls
         h3#status
-        button#stop.small.alert.radius Stop
-        button#resume.small.success.radius Resume
-        button#reset.small.radius Clear
+        #searchControls
+          h5 Search Controls:
+          button#stop.small.alert.radius Stop
+          button#resume.small.success.radius Resume
+        #mapControls
+          button#clear.tiny.radius Clear Tweets
+          button#newSearch.tiny.radius.success New Search
       #stats Stats placeholder
-        h2#query-text
+        h2#queryText
       #data
 
   //- .row

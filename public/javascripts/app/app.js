@@ -3,7 +3,7 @@
 $(document).ready(initialize);
 
 var socket;
-// var map;
+var markers = [];
 
 function initialize(){
   $(document).foundation();
@@ -13,6 +13,7 @@ function initialize(){
   $('#start').on('click', clickPulse);
   $('#stop').on('click', clickStop);
   $('#resume').on('click', clickResume);
+  $('clear').on('click', clickClear);
 }
 
 //------------------------------------------------------------------//
@@ -26,8 +27,8 @@ function clickPulse(event){
   event.preventDefault();
   $('#status').text('');
   $('#status').text('Searching Tweets');
-  $('#query-text').text('');
-  $('#query-text').text(query);
+  $('#queryText').text('');
+  $('#queryText').text(query);
 }
 
 function clickStop(event){
@@ -36,11 +37,15 @@ function clickStop(event){
 
 function clickResume(event){
   // debugger;
-  var query = $('#user-query').val();
+  var query = $('#userQuery').val();
   // socket.emit('resumesearch', {query: query});
   socket.emit('startsearch', {query:query});
   $('#status').text('');
   $('#status').text('Search Resumed');
+}
+
+function clickClear(event){
+
 }
 //------------------------------------------------------------------//
 //------------------------------------------------------------------//
@@ -84,6 +89,7 @@ function socketNewTweet(data){
     icon: data.profile_image_url
   });
   marker.setMap(map);
+  markers.push(marker);
 
   htmlMapStats(data);
 
