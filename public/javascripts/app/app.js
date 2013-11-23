@@ -13,7 +13,7 @@ function initialize(){
   $('#start').on('click', clickPulse);
   $('#stop').on('click', clickStop);
   $('#resume').on('click', clickResume);
-  $('clear').on('click', clickClear);
+  $('#clear').on('click', clickClear);
 }
 
 //------------------------------------------------------------------//
@@ -33,6 +33,8 @@ function clickPulse(event){
 
 function clickStop(event){
   socket.emit('stopsearch', {});
+  $('#status').text('');
+  $('#status').text('Search Stopping');
 }
 
 function clickResume(event){
@@ -41,10 +43,13 @@ function clickResume(event){
   // socket.emit('resumesearch', {query: query});
   socket.emit('startsearch', {query:query});
   $('#status').text('');
-  $('#status').text('Search Resumed');
+  $('#status').text('Search Resuming');
 }
 
 function clickClear(event){
+  socket.emit('cleartweets', {});
+  $('#status').text('');
+  $('#status').text('Clearing Tweets');
 
 }
 //------------------------------------------------------------------//
@@ -68,7 +73,8 @@ function initializeSocketIO(){
   socket.on('connected', socketConnected);
   socket.on('newTweet', socketNewTweet);
   socket.on('streamstopped', socketStreamStopped);
-  // socket.on('streamresumed', socketStreamResumed);
+  socket.on('streamresumed', socketStreamResumed);
+  socket.on('tweetscleared', socketTweetsCleared);
 }
 
 function socketConnected(data){
@@ -105,6 +111,15 @@ function socketStreamResumed(data){
   console.log(data);
   $('#status').text('');
   $('#status').text('Search Resumed');
+}
+
+function socketTweetsCleared(data){
+  // debugger;
+  console.log(data);
+  function deleteMarkers(){
+    clearMarkers();
+    markers = [];
+  }
 }
 
 //------------------------------------------------------------------//

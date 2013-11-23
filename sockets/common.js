@@ -8,7 +8,7 @@ var io;
 
 exports.connection = function(socket){
   var io = this;
-  // console.log(socket);
+  console.log('this is the SOCKET: ', socket);
   socket.emit('connected', {status: 'connected'});
 
   var T = new Twit({
@@ -27,6 +27,19 @@ exports.connection = function(socket){
     socket.emit('streamresumed', {status: 'stream resumed'});
   });
 
+  var db;
+  socket.on('cleartweets', function(){
+    stream.stop();
+    Tweet.remove(function(err, tweets){
+      if (err){
+        console.log('Error clearing db', err);
+      } else {
+        console.log('cleared tweets db');
+        socket.emit('tweetscleared', {status: 'tweets cleared'});
+      }
+    });
+  });
+
   socket.on('startsearch', function(data){
     // console.log(data)
     var options = [];
@@ -38,10 +51,8 @@ exports.connection = function(socket){
     // options['locations'] = [-180,-90,180,90];
 
     if(data.query){
-      // options['track'] = data.query;
       options.track = data.query;
     } else {
-      // options['locations'] = [-180,-90,180,90];
       options.locations = [-180,-90,180,90];
     }
 
