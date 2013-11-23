@@ -8,7 +8,8 @@ var socket;
 function initialize(){
   $(document).foundation();
   initializeSocketIO();
-  initMap(40, -95, 1);
+  // initMap(40, -95, 2);
+  initMap(50, 0, 2);
   $('#start').on('click', clickPulse);
   $('#stop').on('click', clickStop);
   $('#resume').on('click', clickResume);

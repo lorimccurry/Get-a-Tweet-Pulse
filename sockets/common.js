@@ -38,9 +38,11 @@ exports.connection = function(socket){
     // options['locations'] = [-180,-90,180,90];
 
     if(data.query){
-      options['track'] = data.query;
+      // options['track'] = data.query;
+      options.track = data.query;
     } else {
-      options['locations'] = [-180,-90,180,90];
+      // options['locations'] = [-180,-90,180,90];
+      options.locations = [-180,-90,180,90];
     }
 
     console.log('These are OPTIONS: %%%%%%%%%%%%%%%%%%%%5 ', options);
