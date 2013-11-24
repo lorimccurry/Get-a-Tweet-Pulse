@@ -3,6 +3,7 @@
 $(document).ready(initialize);
 
 var socket;
+var map;
 var markers = [];
 
 function initialize(){
@@ -114,12 +115,8 @@ function socketStreamResumed(data){
 }
 
 function socketTweetsCleared(data){
-  // debugger;
   console.log(data);
-  function deleteMarkers(){
-    clearMarkers();
-    markers = [];
-  }
+  deleteMarkers()
 }
 
 //------------------------------------------------------------------//
@@ -128,4 +125,27 @@ function socketTweetsCleared(data){
 
 function htmlMapStats(data){
 
+}
+//------------------------------------------------------------------//
+//------------------------------------------------------------------//
+//------------------------------------------------------------------//
+
+
+function setAllMap(map) {
+  for (var i = 0; i < markers.length; i++) {
+    markers[i].setMap(map);
+  }
+}
+
+function clearMarkers() {
+  setAllMap(null);
+}
+
+function showMarkers() {
+  setAllMap(map);
+}
+
+function deleteMarkers(){
+  clearMarkers();
+  markers = [];
 }
