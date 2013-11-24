@@ -29,8 +29,8 @@ function clickPulse(event){
   $('#status').text('Searching Tweets');
   $('#queryText').text('');
   $('#queryText').text(query);
-  // $('#userQuery').text('');
-  // $('#query').addClass('hidden');
+  $('#userQuery').val('');
+  $('#query').addClass('hidden');
 }
 
 function clickStop(event){
@@ -139,7 +139,7 @@ function socketTweetsCleared(data){
   deleteMarkers();
   $('#status').text('');
   $('#status').text(data.status);
-  // $('#query').removeClass('hidden').text('');
+  $('#query').removeClass('hidden');
 }
 
 //------------------------------------------------------------------//
