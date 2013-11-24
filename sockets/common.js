@@ -66,13 +66,13 @@ exports.connection = function(socket){
         // console.log(tweet.place.name);
         var newTweet = new Tweet({
           geo: tweet.geo.coordinates,
-          screen_name: tweet.user.screen_name,
+          screenName: tweet.user.screen_name,
           name: tweet.user.name,
           lang: tweet.lang,
           text: tweet.text,
-          profile_image_url: tweet.user.profile_image_url,
+          profileImageUrl: tweet.user.profile_image_url,
           //place_name: tweet.place.name,
-          place_full_name: tweet.place ? tweet.place.full_name:null,
+          placeFullName: tweet.place ? tweet.place.full_name:null,
           query: data.query
         });
         newTweet.save(function(err, result){

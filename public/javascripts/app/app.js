@@ -15,6 +15,7 @@ function initialize(){
   $('#stop').on('click', clickStop);
   $('#resume').on('click', clickResume);
   $('#clear').on('click', clickClear);
+  $('#originalZoom').on('click', clickOriginalZoom);
 }
 
 //------------------------------------------------------------------//
@@ -53,7 +54,12 @@ function clickClear(event){
   socket.emit('cleartweets', {});
   $('#status').text('');
   $('#status').text('Clearing Tweets');
+}
 
+function clickOriginalZoom(event){
+  // var zoom = new google.maps.LatLng(lat, lng);
+  // map.setCenter(50, 0);
+  // map.setZoom(2);
 }
 //------------------------------------------------------------------//
 //------------------------------------------------------------------//
@@ -108,13 +114,13 @@ function socketNewTweet(data){
   var marker = new google.maps.Marker({
     position: myLatlng,
     map: map,
-    title: data.screen_name + ': ' + data.text,
-    icon: data.profile_image_url
+    // title: data.screenName + ': ' + data.text,
+    icon: data.profileImageUrl
     // animation: google.maps.Animation.DROP
   });
   marker.setMap(map);
   markers.push(marker);
-
+  htmlMarkerInfoWindow(map, marker, data);
   htmlMapStats(data);
 
 }
@@ -122,7 +128,6 @@ function socketNewTweet(data){
 function socketStreamStopped(data){
   console.log(data);
   $('#status').text('');
-  // $('#status').text('Search Stopped');
   $('#status').text(data.status);
   $('#resume').removeClass('hidden');
 
@@ -139,12 +144,31 @@ function socketTweetsCleared(data){
   deleteMarkers();
   $('#status').text('');
   $('#status').text(data.status);
+  $('#queryText').text('');
+  $('#status').text('');
   $('#query').removeClass('hidden');
 }
 
 //------------------------------------------------------------------//
 //------------------------------------------------------------------//
 //------------------------------------------------------------------//
+function htmlMarkerInfoWindow(map, marker, data){
+  var content = '<div class="tweetInfoWindow"><p>' + data.screenName + ': ' + data.text + '</p></div>';
+  var infowindow = new google.maps.InfoWindow({
+    content: content,
+    disableAutoPan: true
+  });
+
+  google.maps.event.addListener(marker, 'mouseover', function() {
+    infowindow.open(map,marker);
+  });
+  google.maps.event.addListener(marker, 'mouseout', function(){
+    infowindow.close(map,marker);
+  });
+  // google.maps.event.addListener(marker, 'click', function(musician){
+  //   window.location = ;
+  // });
+}
 
 function htmlMapStats(data){
 

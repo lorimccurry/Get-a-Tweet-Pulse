@@ -5,8 +5,8 @@ var Tweet = mongoose.Schema({
   // coordinates        : [{}],
 
   // user  : {},
-  screen_name       : String,
-  profile_image_url : String,
+  screenName        : String,
+  profileImageUrl   : String,
   text              : String,
   lang              : String,
   geo               : Array,
@@ -14,7 +14,7 @@ var Tweet = mongoose.Schema({
   // place : [{}],
   // place_type: String,
   // name: String,
-  full_name: String,
+  placeFullName     : String,
   // country_code: String,
   // country: String,
   // // place.bounding_box: {}, //this is what the format looks like from twitter
