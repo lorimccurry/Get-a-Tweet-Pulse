@@ -8,17 +8,20 @@ block content
       #map-canvas
     .small-3.columns
       include form-query
-      #controls
+      #searchStatus
+        span Search status:
         h3#status
+        span Searching:
+        h2#queryText
+      #controls
         #searchControls
-          h5 Search Controls:
+          h5 Controls:
           button#stop.small.alert.radius Stop
           button#resume.small.success.radius Resume
         #mapControls
           button#clear.tiny.radius Clear Tweets
-          button#newSearch.tiny.radius.success New Search
+          button#newSearch.tiny.radius.success Original Zoom
       #stats Stats placeholder
-        h2#queryText
       #data
 
   //- .row

@@ -24,12 +24,13 @@ function clickPulse(event){
   // debugger;
   var query = $(this).parents('fieldset').find('input').val(); //targets the input data
   socket.emit('startsearch', {query:query});
-  // $(this).addClass('hidden');
   event.preventDefault();
   $('#status').text('');
   $('#status').text('Searching Tweets');
   $('#queryText').text('');
   $('#queryText').text(query);
+  // $('#userQuery').text('');
+  // $('#query').addClass('hidden');
 }
 
 function clickStop(event){
@@ -76,10 +77,22 @@ function initializeSocketIO(){
   socket.on('streamstopped', socketStreamStopped);
   socket.on('streamresumed', socketStreamResumed);
   socket.on('tweetscleared', socketTweetsCleared);
+  socket.on('twitterconnect', socketTwitterConnect);
+  socket.on('tweetsreturning', socketTweetsReturning);
 }
 
 function socketConnected(data){
   console.log(data);
+}
+
+function socketTweetsReturning(data){
+  $('#status').text('');
+  $('#status').text(data.status);
+}
+
+function socketTwitterConnect(data){
+  $('#status').text('');
+  $('#status').text(data.status);
 }
 
 function socketNewTweet(data){
@@ -88,12 +101,15 @@ function socketNewTweet(data){
 
   // $('#data').append('<div><img src="' + data.profile_image_url + '"></div>');
   // console.log(data.full_name);
+  $('#status').text('');
+  $('#status').text('Tweets Returning');
   var myLatlng = new google.maps.LatLng(data.geo[0],data.geo[1]);
   var marker = new google.maps.Marker({
     position: myLatlng,
     map: map,
     title: data.screen_name + ': ' + data.text,
     icon: data.profile_image_url
+    // animation: google.maps.Animation.DROP
   });
   marker.setMap(map);
   markers.push(marker);
@@ -116,7 +132,10 @@ function socketStreamResumed(data){
 
 function socketTweetsCleared(data){
   console.log(data);
-  deleteMarkers()
+  deleteMarkers();
+  $('#status').text('');
+  $('#status').text(data.status);
+  // $('#query').removeClass('hidden').text('');
 }
 
 //------------------------------------------------------------------//
@@ -130,11 +149,15 @@ function htmlMapStats(data){
 //------------------------------------------------------------------//
 //------------------------------------------------------------------//
 
-
 function setAllMap(map) {
   for (var i = 0; i < markers.length; i++) {
     markers[i].setMap(map);
   }
+}
+
+function deleteMarkers(){
+  clearMarkers();
+  markers = [];
 }
 
 function clearMarkers() {
@@ -145,7 +168,10 @@ function showMarkers() {
   setAllMap(map);
 }
 
-function deleteMarkers(){
-  clearMarkers();
-  markers = [];
-}
+// function drop() {
+//   for (var i = 0; i < neighborhoods.length; i++) {
+//     setTimeout(function() {
+//       addMarker();
+//     }, i * 200);
+//   }
+// }

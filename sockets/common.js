@@ -12,22 +12,19 @@ exports.connection = function(socket){
   socket.emit('connected', {status: 'connected'});
 
   var T = new Twit({
-    consumer_key: 'dZGYtv7MEtyr5UIOEM6F0Q', //ENV['SECRET']
-    consumer_secret: 'Vcc3C6LA0bTJciWnUmyTj1b3rNROyfpDCkxo5J81Qk0',
-    access_token: '130018142-Yi20QwrR1q23JWrb25I1WCYn1MNMnXRZJMSdB0W6',
-    access_token_secret: 'hUgumhMlbU4xyTOQC0dvxf9pdTrmJ1bIPYHMuMlvt3Lm7'
+
   });
   // locations: ['122.75','36.8','-121.75','37.8']
   var stream = null;
 
   socket.on('stopsearch', function(){
     stream.stop();
-    socket.emit('streamstopped', {status: 'stream stopped'});
+    socket.emit('streamstopped', {status: 'Twitter search stopped'});
   });
 
   socket.on('resumesearch', function(){
     stream.start();
-    socket.emit('streamresumed', {status: 'stream resumed'});
+    socket.emit('streamresumed', {status: 'Twitter search resumed'});
   });
 
   var db;
@@ -38,7 +35,7 @@ exports.connection = function(socket){
         console.log('Error clearing db', err);
       } else {
         console.log('cleared tweets db');
-        socket.emit('tweetscleared', {status: 'tweets cleared'});
+        socket.emit('tweetscleared', {status: 'Tweets cleared'});
       }
     });
   });
@@ -59,7 +56,7 @@ exports.connection = function(socket){
       options.locations = [-180,-90,180,90];
     }
 
-    console.log('These are OPTIONS: %%%%%%%%%%%%%%%%%%%%5 ', options);
+    // console.log('These are OPTIONS: %%%%%%%%%%%%%%%%%%%%5 ', options);
 
     stream = T.stream('statuses/filter', options);
     stream.on('tweet', function (tweet) {
@@ -92,6 +89,7 @@ exports.connection = function(socket){
 
     stream.on('tweet', function (tweet) {
       // console.log('TWWEETTY!***************************');
+      // socket.emit('tweetsreturning', {status: 'Tweets Being Returned'});
     });
 
     stream.on('delete', function (deleteMessage) {
@@ -113,6 +111,7 @@ exports.connection = function(socket){
 
     stream.on('connect', function (request) {
       console.log('CONNECT ATTEMPT ' , request);
+      socket.emit('twitterconnect', {status: 'Waiting on Twitter'});
     });
   });
 };
