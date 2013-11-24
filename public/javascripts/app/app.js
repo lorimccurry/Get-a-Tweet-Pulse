@@ -42,10 +42,11 @@ function clickStop(event){
 function clickResume(event){
   // debugger;
   var query = $('#userQuery').val();
-  // socket.emit('resumesearch', {query: query});
-  socket.emit('startsearch', {query:query});
+  socket.emit('resumesearch', {query: query});
+  // socket.emit('startsearch', {query:query});
   $('#status').text('');
-  $('#status').text('Search Resuming');
+  $('#status').text('Resuming Twitter Connection');
+  $('#resume').addClass('hidden');
 }
 
 function clickClear(event){
@@ -121,13 +122,16 @@ function socketNewTweet(data){
 function socketStreamStopped(data){
   console.log(data);
   $('#status').text('');
-  $('#status').text('Search Stopped');
+  // $('#status').text('Search Stopped');
+  $('#status').text(data.status);
+  $('#resume').removeClass('hidden');
+
 }
 
 function socketStreamResumed(data){
   console.log(data);
   $('#status').text('');
-  $('#status').text('Search Resumed');
+  $('#status').text(data.status);
 }
 
 function socketTweetsCleared(data){

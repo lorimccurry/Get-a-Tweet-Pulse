@@ -20,14 +20,15 @@ exports.connection = function(socket){
   socket.on('stopsearch', function(){
     stream.stop();
     socket.emit('streamstopped', {status: 'Twitter search stopped'});
+    console.log('Twitter search stopped');
   });
 
   socket.on('resumesearch', function(){
     stream.start();
     socket.emit('streamresumed', {status: 'Twitter search resumed'});
+    console.log('Resuming Twitter Search');
   });
 
-  var db;
   socket.on('cleartweets', function(){
     stream.stop();
     Tweet.remove(function(err, tweets){
