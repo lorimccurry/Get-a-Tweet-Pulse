@@ -12,11 +12,12 @@ exports.connection = function(socket){
   socket.emit('connected', {status: 'connected'});
 
   var T = new Twit({
-    consumer_key: 'dZGYtv7MEtyr5UIOEM6F0Q', //ENV['SECRET']
-    consumer_secret: 'Vcc3C6LA0bTJciWnUmyTj1b3rNROyfpDCkxo5J81Qk0',
-    access_token: '130018142-Yi20QwrR1q23JWrb25I1WCYn1MNMnXRZJMSdB0W6',
-    access_token_secret: 'hUgumhMlbU4xyTOQC0dvxf9pdTrmJ1bIPYHMuMlvt3Lm7'
+    consumer_key: process.env.TW_CONSUMER_KEY,
+    consumer_secret: process.env.TW_CONSUMER_SEC,
+    access_token: process.env.TW_ACCESS_TOKEN,
+    access_token_secret: process.env.TW_ACCESS_TKSEC
   });
+
   // locations: ['122.75','36.8','-121.75','37.8']
   var stream = null;
 
