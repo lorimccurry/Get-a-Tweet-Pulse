@@ -12,7 +12,10 @@ exports.connection = function(socket){
   socket.emit('connected', {status: 'connected'});
 
   var T = new Twit({
-
+    consumer_key: 'dZGYtv7MEtyr5UIOEM6F0Q', //ENV['SECRET']
+    consumer_secret: 'Vcc3C6LA0bTJciWnUmyTj1b3rNROyfpDCkxo5J81Qk0',
+    access_token: '130018142-Yi20QwrR1q23JWrb25I1WCYn1MNMnXRZJMSdB0W6',
+    access_token_secret: 'hUgumhMlbU4xyTOQC0dvxf9pdTrmJ1bIPYHMuMlvt3Lm7'
   });
   // locations: ['122.75','36.8','-121.75','37.8']
   var stream = null;
@@ -114,6 +117,11 @@ exports.connection = function(socket){
       console.log('CONNECT ATTEMPT ' , request);
       socket.emit('twitterconnect', {status: 'Waiting on Twitter'});
     });
+
+    // stream.on('reconnect', function (request) {
+    //   console.log('RECONNECT ATTEMPT ' , request);
+    //   socket.emit('twitterreconnect', {status: 'Reconnecting: Waiting on Twitter'});
+    // });
   });
 };
 

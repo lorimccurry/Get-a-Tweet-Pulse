@@ -14,9 +14,14 @@ body{
   // background-image: url('../images/blue_black_background.jpg');
 }
 
-html, body, #mapRow, #mapContainer, #map-canvas{
+html, body, #map, #map-canvas{
   height: 100%;
 }
+
+// #map-canvas{
+//   height: 100%;
+//   width: 100%;
+// }
 
 .hidden{
   display: none;
@@ -31,9 +36,7 @@ html, body, #mapRow, #mapContainer, #map-canvas{
 //--------------------------------------------//
 
 
-// .top-bar, .contain-to-grid{
-//   background: rgb(30, 117, 171) !important;
-// }
+
 
 //------------------END NAV-------------------//
 //--------------------------------------------//
@@ -45,16 +48,25 @@ html, body, #mapRow, #mapContainer, #map-canvas{
 //-------------------MAP----------------------//
 //--------------------------------------------//
 
-
+// #map{
+//   margin-left: 0;
+// }
 
 #map-canvas{
   width: 100%;
-  margin-top: 10px;
-  margin-bottom: 10px;
+  margin-left: 0;
+  // margin-top: 10px;
+  // margin-bottom: 10px;
 }
 
 .tweetInfoWindow{
-  font-size: 5px;
+  max-width: 200px;
+  p{
+    font-size: 10px;
+    span{
+      font-weight: bolder;
+    }
+  }
 }
 
 

@@ -3,26 +3,25 @@ include ../mixins/form-helper
 
 
 block content
-  .row#mapRow
-    .small-9.columns#mapContainer
-      #map-canvas
-    .small-3.columns
-      include form-query
-      #searchStatus
-        span Searching:
-        h2#queryText
-        span Search status:
-        h3#status
-      #controls
-        #searchControls
-          h5 Controls:
-          button#stop.small.alert.radius Stop
-          button#resume.small.success.radius.hidden Resume
-        #mapControls
-          button#clear.tiny.radius Clear Tweets
-          button#originalZoom.tiny.radius.success Original Zoom
+  .small-9.columns#map
+    #map-canvas
+  .small-3.columns
+    include form-query
+    #searchStatus
+      span Searching:
+      h2#queryText
+      span Search status:
+      h3#status
+    #controls
+      #searchControls
+        h5 Controls:
+        button#stop.small.alert.radius Stop
+        button#resume.small.success.radius.hidden Resume
+      #mapControls
+        button#clear.tiny.radius Clear Tweets
+        button#originalZoom.tiny.radius.success Original Zoom
       #stats Stats placeholder
-      #data
+      #tweetCounter
 
   //- .row
   //-   #controls

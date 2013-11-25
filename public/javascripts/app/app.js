@@ -85,6 +85,7 @@ function initializeSocketIO(){
   socket.on('streamresumed', socketStreamResumed);
   socket.on('tweetscleared', socketTweetsCleared);
   socket.on('twitterconnect', socketTwitterConnect);
+  socket.on('twitterreconnect', socketTwitterReconnect);
   socket.on('tweetsreturning', socketTweetsReturning);
 }
 
@@ -100,6 +101,12 @@ function socketTweetsReturning(data){
 function socketTwitterConnect(data){
   $('#status').text('');
   $('#status').text(data.status);
+}
+
+function socketTwitterReconnect(data){
+  // $('#status').text('');
+  // $('#status').text(data.status);
+  console.log(data.status);
 }
 
 function socketNewTweet(data){
@@ -118,6 +125,7 @@ function socketNewTweet(data){
     icon: data.profileImageUrl
     // animation: google.maps.Animation.DROP
   });
+  // iterator++;
   marker.setMap(map);
   markers.push(marker);
   htmlMarkerInfoWindow(map, marker, data);
@@ -153,10 +161,12 @@ function socketTweetsCleared(data){
 //------------------------------------------------------------------//
 //------------------------------------------------------------------//
 function htmlMarkerInfoWindow(map, marker, data){
-  var content = '<div class="tweetInfoWindow"><p>' + data.screenName + ': ' + data.text + '</p></div>';
+  var content = '<div class="tweetInfoWindow"><p><span>' + data.screenName + '</span>: ' + data.text + '</p></div>';
   var infowindow = new google.maps.InfoWindow({
     content: content,
-    disableAutoPan: true
+    disableAutoPan: true,
+    alignBottom: true
+    // maxWidth: 200
   });
 
   google.maps.event.addListener(marker, 'mouseover', function() {
@@ -171,10 +181,12 @@ function htmlMarkerInfoWindow(map, marker, data){
 }
 
 function htmlMapStats(data){
-
+  $('#tweetCounter').text('');
+  var tweetCounter = markers.length;
+  $('#tweetCounter').text(tweetCounter);
 }
 //------------------------------------------------------------------//
-//------------------------------------------------------------------//
+//------------------Google Map Functions----------------------------//
 //------------------------------------------------------------------//
 
 function setAllMap(map) {
