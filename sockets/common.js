@@ -7,6 +7,7 @@ var Tweet = mongoose.model('Tweet');
 var io;
 
 exports.connection = function(socket){
+  console.log('THE CONNECTION FUNCTION JUST GOT CALLED!!!!!!');
   var io = this;
   // console.log('this is the SOCKET: ', socket);
   socket.emit('connected', {status: 'connected'});
@@ -23,6 +24,7 @@ exports.connection = function(socket){
 
   socket.on('stopsearch', function(){
     stream.stop();
+    // stream = null;
     socket.emit('streamstopped', {status: 'Twitter search stopped'});
     console.log('Twitter search stopped');
   });
@@ -94,7 +96,7 @@ exports.connection = function(socket){
 
     stream.on('tweet', function (tweet) {
       // console.log('TWWEETTY!***************************');
-      // socket.emit('tweetsreturning', {status: 'Tweets Being Returned'});
+      socket.emit('tweetsreturning', {status: 'Tweets Being Returned'});
     });
 
     stream.on('delete', function (deleteMessage) {
@@ -115,15 +117,16 @@ exports.connection = function(socket){
     });
 
     stream.on('connect', function (request) {
-      console.log('CONNECT ATTEMPT ' , request);
+      console.log('CONNECT ATTEMPT');
+      console.log(request);
       socket.emit('twitterconnect', {status: 'Waiting on Twitter'});
     });
-
-    // stream.on('reconnect', function (request) {
+   // stream.on('reconnect', function (request) {
     //   console.log('RECONNECT ATTEMPT ' , request);
     //   socket.emit('twitterreconnect', {status: 'Reconnecting: Waiting on Twitter'});
     // });
   });
+
 };
 
 function socketStartSearch(data){

@@ -85,7 +85,7 @@ function initializeSocketIO(){
   socket.on('streamresumed', socketStreamResumed);
   socket.on('tweetscleared', socketTweetsCleared);
   socket.on('twitterconnect', socketTwitterConnect);
-  socket.on('twitterreconnect', socketTwitterReconnect);
+  // socket.on('twitterreconnect', socketTwitterReconnect);
   socket.on('tweetsreturning', socketTweetsReturning);
 }
 
@@ -103,11 +103,11 @@ function socketTwitterConnect(data){
   $('#status').text(data.status);
 }
 
-function socketTwitterReconnect(data){
-  // $('#status').text('');
-  // $('#status').text(data.status);
-  console.log(data.status);
-}
+// function socketTwitterReconnect(data){
+//   // $('#status').text('');
+//   // $('#status').text(data.status);
+//   console.log(data.status);
+// }
 
 function socketNewTweet(data){
   console.log(data);
