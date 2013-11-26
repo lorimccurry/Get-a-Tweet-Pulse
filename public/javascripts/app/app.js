@@ -34,6 +34,7 @@ function clickPulse(event){
   $('#queryText').text(query);
   $('#userQuery').val('');
   $('#query').addClass('hidden');
+  $('#tweetCounter').text('0');
 }
 
 function clickStop(event){
@@ -162,6 +163,7 @@ function socketTweetsCleared(data){
   $('#status').text('');
   $('#tweetCounter').text('');
   $('#query').removeClass('hidden');
+  $('#scroll').
 }
 
 //------------------------------------------------------------------//
@@ -202,13 +204,13 @@ function htmlMarkerZoom(map, marker, data){
   });
 }
 
-function htmlMapStats(tweet){
-  // debugger;
-  var tweets = [];
-  $('#tweetCounter').text('');
-  var tweetCounter = markers.length;
-  $('#tweetCounter').text(tweetCounter);
-  tweets.push(tweet);
+function htmlMapStats(){
+  var number = parseInt($('#tweetCounter').text(), 10);
+  number += 1;
+  $('#tweetCounter').text(number);
+
+  // $('#tweetCounter').text('');
+  // $('#tweetCounter').text(markers.length);
 }
 
 function updateTimer(){
@@ -218,8 +220,8 @@ function updateTimer(){
 
 function htmlTweetScroll(data){
   var scrollTweet = ('<div class="scrollTweet"><p><img src="' + data.profileImageUrl + '"><span>' + data.screenName + '</span>: ' + data.text + '</p></div>');
-  debugger;
-  if ($('.scrollTweet p').length == 5){
+  // debugger;
+  if($('.scrollTweet p').length === 5){
     $('.scrollTweet p').last().remove();
   };
   $('#scroll').prepend(scrollTweet);
