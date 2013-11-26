@@ -56,6 +56,7 @@ function clickClear(event){
   socket.emit('cleartweets', {});
   $('#status').text('');
   $('#status').text('Clearing Tweets');
+  markers = [];
 }
 
 function clickOriginalZoom(event){
@@ -208,8 +209,6 @@ function htmlMapStats(tweet){
   $('#tweetCounter').text('');
   var tweetCounter = markers.length;
   $('#tweetCounter').text(tweetCounter);
-
-
   tweets.push(tweet);
 
 }
