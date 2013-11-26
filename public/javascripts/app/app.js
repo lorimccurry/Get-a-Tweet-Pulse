@@ -46,7 +46,6 @@ function clickResume(event){
   // debugger;
   var query = $('#userQuery').val();
   socket.emit('resumesearch', {query: query});
-  socket.emit('startsearch', {query:query});
   $('#status').text('');
   $('#status').text('Resuming Twitter Connection');
   $('#resume').addClass('hidden');
@@ -56,7 +55,6 @@ function clickClear(event){
   socket.emit('cleartweets', {});
   $('#status').text('');
   $('#status').text('Clearing Tweets');
-  markers = [];
 }
 
 function clickOriginalZoom(event){
@@ -144,7 +142,6 @@ function socketStreamStopped(data){
   $('#status').text('');
   $('#status').text(data.status);
   $('#resume').removeClass('hidden');
-
 }
 
 function socketStreamResumed(data){
@@ -160,6 +157,7 @@ function socketTweetsCleared(data){
   $('#status').text(data.status);
   $('#queryText').text('');
   $('#status').text('');
+  $('#tweetCounter').text('');
   $('#query').removeClass('hidden');
 }
 
@@ -204,13 +202,12 @@ function htmlMarkerInfoWindow(map, marker, data){
 // }
 
 function htmlMapStats(tweet){
-  debugger;
+  // debugger;
   var tweets = [];
   $('#tweetCounter').text('');
   var tweetCounter = markers.length;
   $('#tweetCounter').text(tweetCounter);
   tweets.push(tweet);
-
 }
 
 function updateTimer(){
