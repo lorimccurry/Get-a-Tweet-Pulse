@@ -4,13 +4,14 @@ $(document).ready(initialize);
 
 var socket;
 var map;
+var center;
 var markers = [];
 
 function initialize(){
   $(document).foundation();
   initializeSocketIO();
   // initMap(40, -95, 2);
-  initMap(50, 0, 2);
+  initMap(0, 0, 2);
   $('#start').on('click', clickPulse);
   $('#stop').on('click', clickStop);
   $('#resume').on('click', clickResume);
@@ -44,7 +45,7 @@ function clickResume(event){
   // debugger;
   var query = $('#userQuery').val();
   socket.emit('resumesearch', {query: query});
-  // socket.emit('startsearch', {query:query});
+  socket.emit('startsearch', {query:query});
   $('#status').text('');
   $('#status').text('Resuming Twitter Connection');
   $('#resume').addClass('hidden');
@@ -68,6 +69,7 @@ function clickOriginalZoom(event){
 function initMap(lat, lng, zoom){
   var mapOptions = {center: new google.maps.LatLng(lat, lng), zoom: zoom, mapTypeId: google.maps.MapTypeId.ROADMAP};
   map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+  google.maps.event.trigger(map, 'resize');
 }
 
 
@@ -129,6 +131,7 @@ function socketNewTweet(data){
   marker.setMap(map);
   markers.push(marker);
   htmlMarkerInfoWindow(map, marker, data);
+  htmlMarkerZoom(map, marker, data);
   htmlMapStats(data);
 
 }
@@ -180,6 +183,21 @@ function htmlMarkerInfoWindow(map, marker, data){
   // });
 }
 
+function htmlMarkerZoom(map, marker, data){
+  google.maps.event.addListener(map, 'center_changed', function() {
+  // 3 seconds after the center of the map has changed, pan back to the
+  // marker.
+    window.setTimeout(function() {
+      map.panTo(marker.getPosition());
+    }, 3000);
+  });
+
+  google.maps.event.addListener(marker, 'click', function() {
+    map.setZoom(14);
+    map.setCenter(marker.getPosition());
+  });
+}
+
 function htmlMapStats(data){
   $('#tweetCounter').text('');
   var tweetCounter = markers.length;
@@ -207,6 +225,19 @@ function clearMarkers() {
 function showMarkers() {
   setAllMap(map);
 }
+
+
+
+
+// function calculateCenter() {
+//   center = map.getCenter();
+// }
+// google.maps.event.addDomListener(map, 'idle', function() {
+//   calculateCenter();
+// });
+// google.maps.event.addDomListener(window, 'resize', function() {
+//   map.setCenter(center);
+// });
 
 // function drop() {
 //   for (var i = 0; i < neighborhoods.length; i++) {
