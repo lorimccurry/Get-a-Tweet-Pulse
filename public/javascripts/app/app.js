@@ -6,12 +6,13 @@ var socket;
 var map;
 var center;
 var markers = [];
+var timer = 0;
 
 function initialize(){
   $(document).foundation();
   initializeSocketIO();
   // initMap(40, -95, 2);
-  initMap(0, 0, 2);
+  initMap(15, 0, 2);
   $('#start').on('click', clickPulse);
   $('#stop').on('click', clickStop);
   $('#resume').on('click', clickResume);
@@ -112,6 +113,7 @@ function socketTwitterConnect(data){
 // }
 
 function socketNewTweet(data){
+  // debugger;
   console.log(data);
   // console.log(data.text);
 
@@ -131,7 +133,7 @@ function socketNewTweet(data){
   marker.setMap(map);
   markers.push(marker);
   htmlMarkerInfoWindow(map, marker, data);
-  htmlMarkerZoom(map, marker, data);
+  // htmlMarkerZoom(map, marker, data);
   htmlMapStats(data);
 
 }
@@ -183,25 +185,38 @@ function htmlMarkerInfoWindow(map, marker, data){
   // });
 }
 
-function htmlMarkerZoom(map, marker, data){
-  google.maps.event.addListener(map, 'center_changed', function() {
-  // 3 seconds after the center of the map has changed, pan back to the
-  // marker.
-    window.setTimeout(function() {
-      map.panTo(marker.getPosition());
-    }, 3000);
-  });
 
-  google.maps.event.addListener(marker, 'click', function() {
-    map.setZoom(14);
-    map.setCenter(marker.getPosition());
-  });
-}
 
-function htmlMapStats(data){
+// function htmlMarkerZoom(map, marker, data){
+//   google.maps.event.addListener(map, 'center_changed', function() {
+//   // 3 seconds after the center of the map has changed, pan back to the
+//   // marker.
+//     window.setTimeout(function() {
+//       map.panTo(marker.getPosition());
+//     }, 3000);
+//   });
+
+//   google.maps.event.addListener(marker, 'click', function() {
+//     map.setZoom(8);
+//     map.setCenter(marker.getPosition());
+//   });
+// }
+
+function htmlMapStats(tweet){
+  debugger;
+  var tweets = [];
   $('#tweetCounter').text('');
   var tweetCounter = markers.length;
   $('#tweetCounter').text(tweetCounter);
+
+
+  tweets.push(tweet);
+
+}
+
+function updateTimer(){
+  var timer = document.getElementById('timer');
+  timer.innerHTML = Date();
 }
 //------------------------------------------------------------------//
 //------------------Google Map Functions----------------------------//
