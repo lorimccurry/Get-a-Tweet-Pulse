@@ -23,12 +23,6 @@ block content
     #stats Stats placeholder
       #tweetCounter
       #timer
-
-  //- .row
-  //-   #controls
-  //-     .small-2.small-offset-8.columns: button#stop.small.alert.radius Stop
-  //-     .small-2.columns: button#reset.small.success.radius Reset
-  //- .row
-  //-   #stats
-  //-     .small-4.small-offset-8.columns
-
+      #scroll
+        //- if tweet
+          p= tweet.screen_name

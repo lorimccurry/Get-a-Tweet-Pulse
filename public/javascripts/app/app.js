@@ -6,13 +6,13 @@ var socket;
 var map;
 var center;
 var markers = [];
+
 var timer = 0;
 
 function initialize(){
   $(document).foundation();
   initializeSocketIO();
-  // initMap(40, -95, 2);
-  initMap(15, 0, 2);
+  initMap(20, 0, 2);
   $('#start').on('click', clickPulse);
   $('#stop').on('click', clickStop);
   $('#resume').on('click', clickResume);
@@ -59,8 +59,13 @@ function clickClear(event){
 
 function clickOriginalZoom(event){
   // var zoom = new google.maps.LatLng(lat, lng);
-  // map.setCenter(50, 0);
+  // map.setCenter(20, 0);
   // map.setZoom(2);
+
+  // MyMap.map.setCenter(new google.maps.LatLng( 20, 0 ) );
+
+  // map.panTo(20, 0);
+  // setZoom(2);
 }
 //------------------------------------------------------------------//
 //------------------------------------------------------------------//
@@ -71,7 +76,6 @@ function initMap(lat, lng, zoom){
   map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
   google.maps.event.trigger(map, 'resize');
 }
-
 
 //------------------------------------------------------------------//
 //------------------------------------------------------------------//
@@ -124,7 +128,6 @@ function socketNewTweet(data){
   var marker = new google.maps.Marker({
     position: myLatlng,
     map: map,
-    // title: data.screenName + ': ' + data.text,
     icon: data.profileImageUrl
     // animation: google.maps.Animation.DROP
   });
@@ -134,7 +137,7 @@ function socketNewTweet(data){
   htmlMarkerInfoWindow(map, marker, data);
   // htmlMarkerZoom(map, marker, data);
   htmlMapStats(data);
-
+  htmlTweetScroll(data);
 }
 
 function socketStreamStopped(data){
@@ -168,7 +171,7 @@ function htmlMarkerInfoWindow(map, marker, data){
   var content = '<div class="tweetInfoWindow"><p><span>' + data.screenName + '</span>: ' + data.text + '</p></div>';
   var infowindow = new google.maps.InfoWindow({
     content: content,
-    disableAutoPan: true,
+    disableAutoPan: false,
     alignBottom: true
     // maxWidth: 200
   });
@@ -184,22 +187,20 @@ function htmlMarkerInfoWindow(map, marker, data){
   // });
 }
 
+function htmlMarkerZoom(map, marker, data){
+  google.maps.event.addListener(map, 'center_changed', function() {
+  // 3 seconds after the center of the map has changed, pan back to the
+  // marker.
+    window.setTimeout(function() {
+      map.panTo(marker.getPosition());
+    }, 3000);
+  });
 
-
-// function htmlMarkerZoom(map, marker, data){
-//   google.maps.event.addListener(map, 'center_changed', function() {
-//   // 3 seconds after the center of the map has changed, pan back to the
-//   // marker.
-//     window.setTimeout(function() {
-//       map.panTo(marker.getPosition());
-//     }, 3000);
-//   });
-
-//   google.maps.event.addListener(marker, 'click', function() {
-//     map.setZoom(8);
-//     map.setCenter(marker.getPosition());
-//   });
-// }
+  google.maps.event.addListener(marker, 'click', function() {
+    map.setZoom(8);
+    map.setCenter(marker.getPosition());
+  });
+}
 
 function htmlMapStats(tweet){
   // debugger;
@@ -213,6 +214,15 @@ function htmlMapStats(tweet){
 function updateTimer(){
   var timer = document.getElementById('timer');
   timer.innerHTML = Date();
+}
+
+function htmlTweetScroll(data){
+  var scrollTweet = ('<div class="scrollTweet"><p><img src="' + data.profileImageUrl + '"><span>' + data.screenName + '</span>: ' + data.text + '</p></div>');
+  debugger;
+  if ($('.scrollTweet p').length == 5){
+    $('.scrollTweet p').last().remove();
+  };
+  $('#scroll').prepend(scrollTweet);
 }
 //------------------------------------------------------------------//
 //------------------Google Map Functions----------------------------//
@@ -236,8 +246,6 @@ function clearMarkers() {
 function showMarkers() {
   setAllMap(map);
 }
-
-
 
 
 // function calculateCenter() {
