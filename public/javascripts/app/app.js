@@ -72,11 +72,7 @@ function clickOriginalZoom(event){
 //------------------------------------------------------------------//
 //------------------------------------------------------------------//
 
-function initMap(lat, lng, zoom){
-  var mapOptions = {center: new google.maps.LatLng(lat, lng), zoom: zoom, mapTypeId: google.maps.MapTypeId.ROADMAP};
-  map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
-  google.maps.event.trigger(map, 'resize');
-}
+
 
 //------------------------------------------------------------------//
 //------------------------------------------------------------------//
@@ -138,6 +134,7 @@ function socketNewTweet(data){
   htmlMarkerInfoWindow(map, marker, data);
   // htmlMarkerZoom(map, marker, data);
   htmlMapStats(data);
+  // timer = setInterval(htmlTweetScroll(data), 2000);
   htmlTweetScroll(data);
 }
 
@@ -163,7 +160,9 @@ function socketTweetsCleared(data){
   $('#status').text('');
   $('#tweetCounter').text('');
   $('#query').removeClass('hidden');
-  // $('#scroll').
+  $('#scroll').empty();
+  initMap(20, 0, 2);
+  // clearInterval(timer);
 }
 
 //------------------------------------------------------------------//
@@ -213,10 +212,10 @@ function htmlMapStats(){
   // $('#tweetCounter').text(markers.length);
 }
 
-function updateTimer(){
-  var timer = document.getElementById('timer');
-  timer.innerHTML = Date();
-}
+// function updateTimer(){
+//   var timer = document.getElementById('timer');
+//   timer.innerHTML = Date();
+// }
 
 function htmlTweetScroll(data){
   var scrollTweet = ('<div class="scrollTweet"><p><img src="' + data.profileImageUrl + '"><span>' + data.screenName + '</span>: ' + data.text + '</p></div>');
@@ -229,6 +228,12 @@ function htmlTweetScroll(data){
 //------------------------------------------------------------------//
 //------------------Google Map Functions----------------------------//
 //------------------------------------------------------------------//
+
+function initMap(lat, lng, zoom){
+  var mapOptions = {center: new google.maps.LatLng(lat, lng), zoom: zoom, mapTypeId: google.maps.MapTypeId.ROADMAP};
+  map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+  google.maps.event.trigger(map, 'resize');
+}
 
 function setAllMap(map) {
   for (var i = 0; i < markers.length; i++) {
