@@ -163,7 +163,7 @@ function socketTweetsCleared(data){
   $('#status').text('');
   $('#tweetCounter').text('');
   $('#query').removeClass('hidden');
-  $('#scroll').
+  // $('#scroll').
 }
 
 //------------------------------------------------------------------//
@@ -223,7 +223,7 @@ function htmlTweetScroll(data){
   // debugger;
   if($('.scrollTweet p').length === 5){
     $('.scrollTweet p').last().remove();
-  };
+  }
   $('#scroll').prepend(scrollTweet);
 }
 //------------------------------------------------------------------//
