@@ -35,6 +35,8 @@ function clickPulse(event){
   $('#userQuery').val('');
   $('#query').addClass('hidden');
   $('#tweetCounter').text('0');
+  // timer = setInterval(htmlTweetScroll, 2000);
+
 }
 
 function clickStop(event){
@@ -134,7 +136,7 @@ function socketNewTweet(data){
   htmlMarkerInfoWindow(map, marker, data);
   // htmlMarkerZoom(map, marker, data);
   htmlMapStats(data);
-  // timer = setInterval(htmlTweetScroll(data), 2000);
+  // timer = setInterval(htmlTweetScroll, 10000);
   htmlTweetScroll(data);
 }
 
@@ -162,7 +164,7 @@ function socketTweetsCleared(data){
   $('#query').removeClass('hidden');
   $('#scroll').empty();
   initMap(20, 0, 2);
-  // clearInterval(timer);
+  clearInterval(timer);
 }
 
 //------------------------------------------------------------------//
@@ -218,13 +220,25 @@ function htmlMapStats(){
 // }
 
 function htmlTweetScroll(data){
-  var scrollTweet = ('<div class="scrollTweet"><p><img src="' + data.profileImageUrl + '"><span>' + data.screenName + '</span>: ' + data.text + '</p></div>');
+// debugger;
+    var scrollTweet = ('<div class="scrollTweet"><p><img src="' + data.profileImageUrl + '"><span>' + data.screenName + '</span>: ' + data.text + '</p></div>');
+    if($('.scrollTweet p').length > 5){
+      $('.scrollTweet p').last().remove();
+    }
+    $('#scroll').prepend(scrollTweet);
+
+  // timer = setInterval(function(){
+    // var scrollTweet = ('<div class="scrollTweet"><p><img src="' + data.profileImageUrl + '"><span>' + data.screenName + '</span>: ' + data.text + '</p></div>');
   // debugger;
-  if($('.scrollTweet p').length === 5){
-    $('.scrollTweet p').last().remove();
+    // var test = ('<p>test</p>');
+    // $('#scroll').prepend(test);
+  // }, 2000);
+  // for(var i = 0; i < $('.scrollTweet p').length; i++){
+  //   if($('.scrollTweet p').length > 5){
+  //     $('.scrollTweet p').last().remove();
+  //   }
+  // }
   }
-  $('#scroll').prepend(scrollTweet);
-}
 //------------------------------------------------------------------//
 //------------------Google Map Functions----------------------------//
 //------------------------------------------------------------------//
