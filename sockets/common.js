@@ -1,10 +1,11 @@
 var async = require('async');
-var __ = require('lodash');
 var Twit = require('twit');
 var express = require('express');
 var mongoose = require('mongoose');
 var Tweet = mongoose.model('Tweet');
+var m = require('../lib/mechanics');
 var io;
+var stream;
 
 exports.connection = function(socket){
   console.log('THE CONNECTION FUNCTION JUST GOT CALLED!!!!!!');
@@ -24,7 +25,6 @@ exports.connection = function(socket){
 
   socket.on('stopsearch', function(){
     stream.stop();
-    // stream = null;
     socket.emit('streamstopped', {status: 'Twitter search stopped'});
     console.log('Twitter search stopped');
   });
@@ -48,14 +48,7 @@ exports.connection = function(socket){
   });
 
   socket.on('startsearch', function(data){
-    // console.log(data)
     var options = [];
-    // var options = { track: data.query, locations: [-180,-90,180,90]}; //NEED TO COME BACK TO THIS - NOT FILTERING W/O IT!!
-    // var options = { track: data.query}; //this doesnt work w/o criteria
-    // if(data.query){
-      // options['track'] = data.query;
-    // }
-    // options['locations'] = [-180,-90,180,90];
 
     if(data.query){
       options.track = data.query;
@@ -63,13 +56,9 @@ exports.connection = function(socket){
       options.locations = [-180,-90,180,90];
     }
 
-    // console.log('These are OPTIONS: %%%%%%%%%%%%%%%%%%%%5 ', options);
-
     stream = T.stream('statuses/filter', options);
     stream.on('tweet', function (tweet) {
       if(tweet.geo) {
-        // console.log(tweet.place.full_name); //full name and name don't always have data, so the function kicks out at that point
-        // console.log(tweet.place.name);
         var newTweet = new Tweet({
           geo: tweet.geo.coordinates,
           screenName: tweet.user.screen_name,
@@ -77,7 +66,6 @@ exports.connection = function(socket){
           lang: tweet.lang,
           text: tweet.text,
           profileImageUrl: tweet.user.profile_image_url,
-          //place_name: tweet.place.name,
           placeFullName: tweet.place ? tweet.place.full_name:null,
           query: data.query
         });
@@ -95,17 +83,7 @@ exports.connection = function(socket){
     });
 
     stream.on('tweet', function (tweet) {
-      // console.log('TWWEETTY!***************************');
       socket.emit('tweetsreturning', {status: 'Tweets Being Returned'});
-    });
-
-    stream.on('delete', function (deleteMessage) {
-      console.log('DELETED TWEET!#################');
-      console.log(deleteMessage);
-    });
-
-    stream.on('scrub_geo', function (scrubGeoMessage) {
-      console.log('SCRUB GEO ' , scrubGeoMessage);
     });
 
     stream.on('limit', function (limitMessage) {
