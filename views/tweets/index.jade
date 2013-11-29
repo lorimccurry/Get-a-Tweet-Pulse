@@ -7,18 +7,18 @@ block content
     #map-canvas
   .small-3.columns
     include form-query
-    #searchStatus
+    #searchStatus.hidden
       span Searching:
       h2#queryText
       span Search status:
       h4#status
-    #controls
+    #controls.hidden
       #searchControls
         h5 Tweet Controls
         button#stop.small.alert.round Stop
         button#resume.small.success.radius.round.hidden Resume
         button#clear.small.round Clear Tweets
-    #stats
+    #stats.hidden
       span Tweet Count:
       h4#tweetCounter
       #scroll

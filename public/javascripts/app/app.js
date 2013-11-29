@@ -34,6 +34,8 @@ function clickPulse(event){
   $('#queryText').text(query);
   $('#userQuery').val('');
   $('#query').addClass('hidden');
+  $('#searchStatus').removeClass('hidden');
+  $('#controls').removeClass('hidden');
   $('#tweetCounter').text('0');
   timer = setInterval(htmlAddTweetScroll, 2000);
 }
@@ -122,6 +124,7 @@ function socketNewTweet(data){
   // console.log(data.full_name);
   $('#status').text('');
   $('#status').text('Tweets Returning');
+  $('#stats').removeClass('hidden');
   var myLatlng = new google.maps.LatLng(data.geo[0],data.geo[1]);
   var marker = new google.maps.Marker({
     position: myLatlng,
@@ -160,6 +163,9 @@ function socketTweetsCleared(data){
   $('#status').text('');
   $('#tweetCounter').text('');
   $('#query').removeClass('hidden');
+  $('#searchStatus').addClass('hidden');
+  $('#controls').addClass('hidden');
+  $('#stats').addClass('hidden');
   $('#scroll').empty();
   initMap(20, 0, 2);
   clearInterval(timer);
