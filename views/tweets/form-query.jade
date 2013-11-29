@@ -1,7 +1,7 @@
 form#query(action='/', method='post')
   fieldset
-    legend Query
+    legend
     .row
-      mixin field(12, 'text', 'tweet-text', 'Hashtag, Word, or Phrase', null, '#bieber, bieber, justin bieber', true, 'userQuery')
+      mixin field(12, 'text', 'tweet-text', 'Word, Phrase or Hashtag', null, '#bieber, bieber, justin bieber', true, 'userQuery')
     .row
-      .small-6.columns: button#start.radius.small.expand.success Get a Pulse
+      .small-9.columns: button#start.round.small.expand.success Get a Pulse
