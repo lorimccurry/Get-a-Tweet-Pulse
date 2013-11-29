@@ -6,13 +6,13 @@ var socket;
 var map;
 var center;
 var markers = [];
-
+var scroll = [];
 var timer = 0;
 
 function initialize(){
   $(document).foundation();
   initializeSocketIO();
-  initMap(20, 0, 2);
+  initMap(15, 0, 2);
   $('#start').on('click', clickPulse);
   $('#stop').on('click', clickStop);
   $('#resume').on('click', clickResume);
@@ -35,29 +35,33 @@ function clickPulse(event){
   $('#userQuery').val('');
   $('#query').addClass('hidden');
   $('#tweetCounter').text('0');
-  // timer = setInterval(htmlTweetScroll, 2000);
-
+  timer = setInterval(htmlAddTweetScroll, 2000);
 }
 
 function clickStop(event){
   socket.emit('stopsearch', {});
   $('#status').text('');
   $('#status').text('Search Stopping');
+  clearInterval(timer);
+  timer = 0;
 }
 
 function clickResume(event){
-  // debugger;
   var query = $('#userQuery').val();
   socket.emit('resumesearch', {query: query});
   $('#status').text('');
   $('#status').text('Resuming Twitter Connection');
   $('#resume').addClass('hidden');
+  timer = setInterval(htmlAddTweetScroll, 2000);
+
 }
 
 function clickClear(event){
   socket.emit('cleartweets', {});
   $('#status').text('');
   $('#status').text('Clearing Tweets');
+  clearInterval(timer);
+  timer = 0;
 }
 
 function clickOriginalZoom(event){
@@ -74,11 +78,6 @@ function clickOriginalZoom(event){
 //------------------------------------------------------------------//
 //------------------------------------------------------------------//
 
-
-
-//------------------------------------------------------------------//
-//------------------------------------------------------------------//
-//------------------------------------------------------------------//
 function initializeSocketIO(){
   var port = window.location.port ? window.location.port : '80';
   var url = window.location.protocol + '//' + window.location.hostname + ':' + port + '/app';
@@ -136,8 +135,7 @@ function socketNewTweet(data){
   htmlMarkerInfoWindow(map, marker, data);
   // htmlMarkerZoom(map, marker, data);
   htmlMapStats(data);
-  // timer = setInterval(htmlTweetScroll, 10000);
-  htmlTweetScroll(data);
+  htmlTweetScrollConstructor(data);
 }
 
 function socketStreamStopped(data){
@@ -165,6 +163,7 @@ function socketTweetsCleared(data){
   $('#scroll').empty();
   initMap(20, 0, 2);
   clearInterval(timer);
+  //will need to clear scroll array
 }
 
 //------------------------------------------------------------------//
@@ -219,13 +218,26 @@ function htmlMapStats(){
 //   timer.innerHTML = Date();
 // }
 
-function htmlTweetScroll(data){
+function htmlTweetScrollConstructor(data){
 // debugger;
     var scrollTweet = ('<div class="scrollTweet"><p><img src="' + data.profileImageUrl + '"><span>' + data.screenName + '</span>: ' + data.text + '</p></div>');
-    if($('.scrollTweet p').length > 5){
+    scroll.push(scrollTweet);
+  }
+
+function htmlAddTweetScroll(){
+  if(markers.length > 0){
+
+    if($('.scrollTweet p').length > 4){
       $('.scrollTweet p').last().remove();
     }
-    $('#scroll').prepend(scrollTweet);
+    $('#scroll').prepend(scroll.pop());
+  }
+}
+  //1) if markers.length > 0, then look at the internal array of tweets getting passed down
+  //from the tweet creator fn and take the last one from the list
+  //2) i also want to be sure that each time this fn fires from the tweet creator fn, that
+  //i'm pushing the tweet into an array.
+  //this fn is getting accessed for each tweet to build the array and by the timer for html
 
   // timer = setInterval(function(){
     // var scrollTweet = ('<div class="scrollTweet"><p><img src="' + data.profileImageUrl + '"><span>' + data.screenName + '</span>: ' + data.text + '</p></div>');
@@ -238,7 +250,7 @@ function htmlTweetScroll(data){
   //     $('.scrollTweet p').last().remove();
   //   }
   // }
-  }
+  // }
 //------------------------------------------------------------------//
 //------------------Google Map Functions----------------------------//
 //------------------------------------------------------------------//

@@ -4,8 +4,8 @@ var express = require('express');
 var mongoose = require('mongoose');
 var Tweet = mongoose.model('Tweet');
 var m = require('../lib/mechanics');
-var io;
-var stream;
+// var io;
+// var stream;
 
 exports.connection = function(socket){
   console.log('THE CONNECTION FUNCTION JUST GOT CALLED!!!!!!');
