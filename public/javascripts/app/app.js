@@ -227,7 +227,7 @@ function htmlTweetScrollConstructor(data){
 function htmlAddTweetScroll(){
   if(markers.length > 0){
 
-    if($('.scrollTweet p').length > 4){
+    if($('.scrollTweet p').length > 2){
       $('.scrollTweet p').last().remove();
     }
     $('#scroll').prepend(scroll.pop());
