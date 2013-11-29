@@ -233,25 +233,7 @@ function htmlAddTweetScroll(){
     $('#scroll').prepend(scroll.pop());
   }
 }
-  //1) if markers.length > 0, then look at the internal array of tweets getting passed down
-  //from the tweet creator fn and take the last one from the list
-  //2) i also want to be sure that each time this fn fires from the tweet creator fn, that
-  //i'm pushing the tweet into an array.
-  //this fn is getting accessed for each tweet to build the array and by the timer for html
-
-  // timer = setInterval(function(){
-    // var scrollTweet = ('<div class="scrollTweet"><p><img src="' + data.profileImageUrl + '"><span>' + data.screenName + '</span>: ' + data.text + '</p></div>');
-  // debugger;
-    // var test = ('<p>test</p>');
-    // $('#scroll').prepend(test);
-  // }, 2000);
-  // for(var i = 0; i < $('.scrollTweet p').length; i++){
-  //   if($('.scrollTweet p').length > 5){
-  //     $('.scrollTweet p').last().remove();
-  //   }
-  // }
-  // }
-//------------------------------------------------------------------//
+ //------------------------------------------------------------------//
 //------------------Google Map Functions----------------------------//
 //------------------------------------------------------------------//
 
