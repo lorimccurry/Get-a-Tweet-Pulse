@@ -130,9 +130,7 @@ function socketNewTweet(data){
     position: myLatlng,
     map: map,
     icon: data.profileImageUrl
-    // animation: google.maps.Animation.DROP
   });
-  // iterator++;
   marker.setMap(map);
   markers.push(marker);
   htmlMarkerInfoWindow(map, marker, data);
@@ -161,15 +159,15 @@ function socketTweetsCleared(data){
   $('#status').text(data.status);
   $('#queryText').text('');
   $('#status').text('');
-  $('#tweetCounter').text('');
+  $('#tweetCounter').text('0');
   $('#query').removeClass('hidden');
   $('#searchStatus').addClass('hidden');
   $('#controls').addClass('hidden');
   $('#stats').addClass('hidden');
   $('#scroll').empty();
+  scroll = [];
   initMap(20, 0, 2);
   clearInterval(timer);
-  //will need to clear scroll array
 }
 
 //------------------------------------------------------------------//
