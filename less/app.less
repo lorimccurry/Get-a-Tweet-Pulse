@@ -83,7 +83,6 @@ html, body, #map{
   }
 }
 
-
 //-----------------END MAP--------------------//
 //--------------------------------------------//
 
@@ -93,14 +92,13 @@ html, body, #map{
 //-----------QUERY/CONTROLS/STATS-------------//
 //--------------------------------------------//
 
-
-
 #stats, #controls, #searchStatus{
   border: 1px solid @baseBorder;
 }
 
 //---------END QUERY/CONTROLS/STATS-----------//
 //--------------------------------------------//
+
 
 
 //--------------------------------------------//
@@ -123,10 +121,19 @@ html, body, #map{
 
 #query{
   fieldset{
-    .row{
-      .small-12.columns{
-        label{
-          font-family: @siteFont;
+    legend{
+      background: none;
+      // border-radius: 5px;
+      font-family: @siteFont;
+      color: white;
+      font-size: 20px;
+      // font-weight: normal;
+      text-shadow: 3px 3px black;
+      .row{
+        .small-12.columns{
+          label{
+            font-family: @siteFont;
+          }
         }
       }
     }
@@ -235,6 +242,12 @@ html, body, #map{
   }
 }
 
+#tweetCounter{
+  font-weight: bold;
+  display: inline;
+  margin-left: 10px;
+
+}
 
 
 //----------------END STATS-------------------//
