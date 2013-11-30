@@ -1,4 +1,4 @@
-NSS-Front-End-Final
+Get a Twitter Pulse
 ===================
 
 This is the capstone project for Nashville Software School front end section. It enables the user to search a word, phrase or hashtag and opens a streaming search of the Twitter API. Results with attached geo-coordinates are populated on a Google map.
