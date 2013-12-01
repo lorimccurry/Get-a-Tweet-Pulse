@@ -18,9 +18,8 @@ exports.connection = function(socket){
     consumer_secret: process.env.TW_CONSUMER_SEC,
     access_token: process.env.TW_ACCESS_TOKEN,
     access_token_secret: process.env.TW_ACCESS_TKSEC
-  });  
+  });
 
-  // locations: ['122.75','36.8','-121.75','37.8']
   var stream = null;
 
   socket.on('stopsearch', function(){
@@ -83,7 +82,7 @@ exports.connection = function(socket){
     });
 
     stream.on('tweet', function (tweet) {
-      socket.emit('tweetsreturning', {status: 'Tweets Returning'});
+      socket.emit('tweetsreturning', {status: 'Listening for Tweets'});
     });
 
     stream.on('limit', function (limitMessage) {
