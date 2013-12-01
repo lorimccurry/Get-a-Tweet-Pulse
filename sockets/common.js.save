@@ -13,12 +13,18 @@ exports.connection = function(socket){
   // console.log('this is the SOCKET: ', socket);
   socket.emit('connected', {status: 'connected'});
 
-  var T = new Twit({
-    consumer_key: process.env.TW_CONSUMER_KEY,
-    consumer_secret: process.env.TW_CONSUMER_SEC,
-    access_token: process.env.TW_ACCESS_TOKEN,
-    access_token_secret: process.env.TW_ACCESS_TKSEC
-  });  
+ var T = new Twit({
+   consumer_key: process.env.TW_CONSUMER_KEY,
+   consumer_secret: process.env.TW_CONSUMER_SEC,
+   access_token: process.env.TW_ACCESS_TOKEN,
+   access_token_secret: process.env.TW_ACCESS_TKSEC
+ });
+ var T = new Twit({
+    consumer_key: 'GuTxDy05F0ZkKHEVaqOaw',
+    consumer_secret:'t0wgwJpwFPqu8YICXKRQ9QwSpbF8TtFCHkht5A8Ws',
+    access_token: '1421605598-39JXJIlpN6AcdabkDuYtcJXxiAnkJMyoKIRSu0a',
+    access_token_secret: 'YsUNNrDiigQEGEe2ARFqg7YvkOkUdQfEaKzcgv9CwOJRF'
+  });     
 
   // locations: ['122.75','36.8','-121.75','37.8']
   var stream = null;
