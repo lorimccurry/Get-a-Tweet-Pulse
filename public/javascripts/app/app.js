@@ -20,11 +20,11 @@ function initialize(){
   $('#originalZoom').on('click', clickOriginalZoom);
 }
 
+
 //------------------------------------------------------------------//
-//------------------------------------------------------------------//
+//-----------------Click Handlers-----------------------------------//
 //------------------------------------------------------------------//
 function clickPulse(event){
-  // debugger;
   var query = $(this).parents('fieldset').find('input').val(); //targets the input data
   socket.emit('startsearch', {query:query});
   event.preventDefault();
@@ -55,7 +55,6 @@ function clickResume(event){
   $('#status').text('Resuming Twitter Connection');
   $('#resume').addClass('hidden');
   timer = setInterval(htmlAddTweetScroll, 2000);
-
 }
 
 function clickClear(event){
@@ -66,18 +65,9 @@ function clickClear(event){
   timer = 0;
 }
 
-function clickOriginalZoom(event){
-  // var zoom = new google.maps.LatLng(lat, lng);
-  // map.setCenter(20, 0);
-  // map.setZoom(2);
 
-  // MyMap.map.setCenter(new google.maps.LatLng( 20, 0 ) );
-
-  // map.panTo(20, 0);
-  // setZoom(2);
-}
 //------------------------------------------------------------------//
-//------------------------------------------------------------------//
+//-------------Socket connection responses and Site Display---------//
 //------------------------------------------------------------------//
 
 function initializeSocketIO(){
@@ -91,7 +81,6 @@ function initializeSocketIO(){
   socket.on('streamresumed', socketStreamResumed);
   socket.on('tweetscleared', socketTweetsCleared);
   socket.on('twitterconnect', socketTwitterConnect);
-  // socket.on('twitterreconnect', socketTwitterReconnect);
   socket.on('tweetsreturning', socketTweetsReturning);
 }
 
@@ -109,14 +98,7 @@ function socketTwitterConnect(data){
   $('#status').text(data.status);
 }
 
-// function socketTwitterReconnect(data){
-//   // $('#status').text('');
-//   // $('#status').text(data.status);
-//   console.log(data.status);
-// }
-
 function socketNewTweet(data){
-  // debugger;
   console.log(data);
   // console.log(data.text);
 
@@ -170,8 +152,9 @@ function socketTweetsCleared(data){
   clearInterval(timer);
 }
 
+
 //------------------------------------------------------------------//
-//------------------------------------------------------------------//
+//---------------------Site Display---------------------------------//
 //------------------------------------------------------------------//
 function htmlMarkerInfoWindow(map, marker, data){
   var content = '<div class="tweetInfoWindow"><p><span>' + data.screenName + '</span>: ' + data.text + '</p></div>';
@@ -179,7 +162,6 @@ function htmlMarkerInfoWindow(map, marker, data){
     content: content,
     disableAutoPan: false,
     alignBottom: true
-    // maxWidth: 200
   });
 
   google.maps.event.addListener(marker, 'mouseover', function() {
@@ -217,16 +199,11 @@ function htmlMapStats(){
   // $('#tweetCounter').text(markers.length);
 }
 
-// function updateTimer(){
-//   var timer = document.getElementById('timer');
-//   timer.innerHTML = Date();
-// }
 
 function htmlTweetScrollConstructor(data){
-// debugger;
-    var scrollTweet = ('<div class="scrollTweet"><p><img src="' + data.profileImageUrl + '"><span>' + data.screenName + '</span>: ' + data.text + '</p></div>');
-    scroll.push(scrollTweet);
-  }
+  var scrollTweet = ('<div class="scrollTweet"><p><img src="' + data.profileImageUrl + '"><span>' + data.screenName + '</span>: ' + data.text + '</p></div>');
+  scroll.push(scrollTweet);
+}
 
 function htmlAddTweetScroll(){
   if(markers.length > 0){
@@ -237,6 +214,8 @@ function htmlAddTweetScroll(){
     $('#scroll').prepend(scroll.pop());
   }
 }
+
+
  //------------------------------------------------------------------//
 //------------------Google Map Functions----------------------------//
 //------------------------------------------------------------------//
@@ -265,22 +244,3 @@ function clearMarkers() {
 function showMarkers() {
   setAllMap(map);
 }
-
-
-// function calculateCenter() {
-//   center = map.getCenter();
-// }
-// google.maps.event.addDomListener(map, 'idle', function() {
-//   calculateCenter();
-// });
-// google.maps.event.addDomListener(window, 'resize', function() {
-//   map.setCenter(center);
-// });
-
-// function drop() {
-//   for (var i = 0; i < neighborhoods.length; i++) {
-//     setTimeout(function() {
-//       addMarker();
-//     }, i * 200);
-//   }
-// }
