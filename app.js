@@ -8,7 +8,6 @@ require('require-dir')('./models');
 var Tweet = mongoose.model('Tweet');
 
 // route definitions
-// var home = require('./routes/home');
 var tweets = require('./routes/tweets');
 
 var app = express();
@@ -19,7 +18,6 @@ mongoose.connect('mongodb://localhost/twitter-map');
 require('./config').initialize(app, RedisStore);
 
 // routes
-// app.get('/', home.index);
 app.get('/', tweets.index);
 app.get('/tweet/:id', tweets.show);
 

@@ -1,11 +1,8 @@
-// var async = require('async');
 var Twit = require('twit');
 var express = require('express');
 var mongoose = require('mongoose');
 var Tweet = mongoose.model('Tweet');
-var m = require('../lib/mechanics');
-// var io;
-// var stream;
+
 
 exports.connection = function(socket){
   console.log('THE CONNECTION FUNCTION JUST GOT CALLED!!!!!!');
@@ -103,7 +100,4 @@ exports.connection = function(socket){
 
 function socketStartSearch(data){
   console.log('this is the socket', data);
-}
-
-function socketDisconnect(){
 }

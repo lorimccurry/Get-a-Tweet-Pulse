@@ -24,7 +24,7 @@ function initialize(){
 //-----------------Click Handlers-----------------------------------//
 //------------------------------------------------------------------//
 function clickPulse(event){
-  var query = $(this).parents('fieldset').find('input').val(); //targets the input data
+  var query = $(this).parents('fieldset').find('input').val();
   socket.emit('startsearch', {query:query});
   event.preventDefault();
   $('#status').text('');
@@ -99,10 +99,6 @@ function socketTwitterConnect(data){
 
 function socketNewTweet(data){
   console.log(data);
-  // console.log(data.text);
-
-  // $('#data').append('<div><img src="' + data.profile_image_url + '"></div>');
-  // console.log(data.full_name);
   $('#status').text('');
   $('#status').text('Tweets Returning');
   $('#stats').removeClass('hidden');
@@ -115,7 +111,6 @@ function socketNewTweet(data){
   marker.setMap(map);
   markers.push(marker);
   htmlMarkerInfoWindow(map, marker, data);
-  // htmlMarkerZoom(map, marker, data);
   htmlMapStats(data);
   htmlTweetScrollConstructor(data);
 }
@@ -169,35 +164,13 @@ function htmlMarkerInfoWindow(map, marker, data){
   google.maps.event.addListener(marker, 'mouseout', function(){
     infowindow.close(map,marker);
   });
-  // google.maps.event.addListener(marker, 'click', function(musician){
-  //   window.location = ;
-  // });
-}
-
-function htmlMarkerZoom(map, marker, data){
-  google.maps.event.addListener(map, 'center_changed', function() {
-  // 3 seconds after the center of the map has changed, pan back to the
-  // marker.
-    window.setTimeout(function() {
-      map.panTo(marker.getPosition());
-    }, 3000);
-  });
-
-  google.maps.event.addListener(marker, 'click', function() {
-    map.setZoom(8);
-    map.setCenter(marker.getPosition());
-  });
 }
 
 function htmlMapStats(){
   var number = parseInt($('#tweetCounter').text(), 10);
   number += 1;
   $('#tweetCounter').text(number);
-
-  // $('#tweetCounter').text('');
-  // $('#tweetCounter').text(markers.length);
 }
-
 
 function htmlTweetScrollConstructor(data){
   var scrollTweet = ('<div class="scrollTweet"><p><img src="' + data.profileImageUrl + '"><span>' + data.screenName + '</span>: ' + data.text + '</p></div>');
