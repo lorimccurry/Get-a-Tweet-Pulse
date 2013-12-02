@@ -17,7 +17,6 @@ function initialize(){
   $('#stop').on('click', clickStop);
   $('#resume').on('click', clickResume);
   $('#clear').on('click', clickClear);
-  $('#originalZoom').on('click', clickOriginalZoom);
 }
 
 

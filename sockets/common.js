@@ -1,4 +1,4 @@
-var async = require('async');
+// var async = require('async');
 var Twit = require('twit');
 var express = require('express');
 var mongoose = require('mongoose');
@@ -10,7 +10,6 @@ var m = require('../lib/mechanics');
 exports.connection = function(socket){
   console.log('THE CONNECTION FUNCTION JUST GOT CALLED!!!!!!');
   var io = this;
-  // console.log('this is the SOCKET: ', socket);
   socket.emit('connected', {status: 'connected'});
 
   var T = new Twit({
@@ -47,6 +46,7 @@ exports.connection = function(socket){
   });
 
   socket.on('startsearch', function(data){
+    console.log(data);
     var options = [];
 
     if(data.query){
@@ -98,12 +98,7 @@ exports.connection = function(socket){
       console.log(request);
       socket.emit('twitterconnect', {status: 'Waiting on Twitter'});
     });
-   // stream.on('reconnect', function (request) {
-    //   console.log('RECONNECT ATTEMPT ' , request);
-    //   socket.emit('twitterreconnect', {status: 'Reconnecting: Waiting on Twitter'});
-    // });
   });
-
 };
 
 function socketStartSearch(data){
