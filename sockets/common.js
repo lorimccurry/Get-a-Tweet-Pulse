@@ -82,7 +82,7 @@ exports.connection = function(socket){
     });
 
     stream.on('tweet', function (tweet) {
-      socket.emit('tweetsreturning', {status: 'Tweet Listening'});
+      socket.emit('tweetsreturning', {status: 'Listening for Tweets'});
     });
 
     stream.on('limit', function (limitMessage) {
