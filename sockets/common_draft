@@ -53,8 +53,30 @@ exports.connection = function(socket){
     }
 
     stream = T.stream('statuses/filter', options);
+    stream.on('tweet', function (tweet) {
+      if(tweet.geo) {
+        var newTweet = new Tweet({
+          geo: tweet.geo.coordinates,
+          screenName: tweet.user.screen_name,
+          name: tweet.user.name,
+          lang: tweet.lang,
+          text: tweet.text,
+          profileImageUrl: tweet.user.profile_image_url,
+          placeFullName: tweet.place ? tweet.place.full_name:null,
+          query: data.query
+        });
+        newTweet.save(function(err, result){
 
-    stream.on('tweet', function (tweet) {createTweet(tweet, stream, data, socket)});
+          // Send to sockets
+          if (err){
+            console.log('Error: ' + err.message);
+          } else {
+            console.log('inserted into database');
+            socket.emit('newTweet', result);
+          }
+        });
+      }
+    });
 
     stream.on('tweet', function (tweet) {
       socket.emit('tweetsreturning', {status: 'Listening for Tweets'});
@@ -75,31 +97,6 @@ exports.connection = function(socket){
     });
   });
 };
-
-function createTweet(tweet, stream, data, socket){
-  if(tweet.geo) {
-    var newTweet = new Tweet({
-      geo: tweet.geo.coordinates,
-      screenName: tweet.user.screen_name,
-      name: tweet.user.name,
-      lang: tweet.lang,
-      text: tweet.text,
-      profileImageUrl: tweet.user.profile_image_url,
-      placeFullName: tweet.place ? tweet.place.full_name:null,
-      query: data.query
-    });
-    newTweet.save(function(err, result){
-
-      // Send to sockets
-      if (err){
-        console.log('Error: ' + err.message);
-      } else {
-        console.log('inserted into database');
-        socket.emit('newTweet', result);
-      }
-    });
-  }
-}
 
 function socketStartSearch(data){
   console.log('this is the socket', data);
