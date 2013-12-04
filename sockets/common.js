@@ -18,29 +18,11 @@ exports.connection = function(socket){
 
   var stream = null;
 
-  socket.on('stopsearch', function(){
-    stream.stop();
-    socket.emit('streamstopped', {status: 'Twitter search stopped'});
-    console.log('Twitter search stopped');
-  });
+  socket.on('stopsearch', function(){stopSearch(stream, socket)});
 
-  socket.on('resumesearch', function(){
-    stream.start();
-    socket.emit('streamresumed', {status: 'Twitter search resumed'});
-    console.log('Resuming Twitter Search');
-  });
+  socket.on('resumesearch', function(){resumeSearch(stream, socket)});
 
-  socket.on('cleartweets', function(){
-    stream.stop();
-    Tweet.remove(function(err, tweets){
-      if (err){
-        console.log('Error clearing db', err);
-      } else {
-        console.log('cleared tweets db');
-        socket.emit('tweetscleared', {status: 'Tweets cleared'});
-      }
-    });
-  });
+  socket.on('cleartweets', function(){clearTweets(stream, socket)});
 
   socket.on('startsearch', function(data){
     console.log(data);
@@ -75,6 +57,30 @@ exports.connection = function(socket){
     });
   });
 };
+
+function stopSearch(stream, socket){
+  stream.stop();
+  socket.emit('streamstopped', {status: 'Twitter search stopped'});
+  console.log('Twitter search stopped');
+}
+
+function resumeSearch(stream, socket){
+  stream.start();
+  socket.emit('streamresumed', {status: 'Twitter search resumed'});
+  console.log('Resuming Twitter Search');
+}
+
+function clearTweets(stream, socket){
+  stream.stop();
+  Tweet.remove(function(err, tweets){
+    if (err){
+      console.log('Error clearing db', err);
+    } else {
+      console.log('cleared tweets db');
+      socket.emit('tweetscleared', {status: 'Tweets cleared'});
+    }
+  });
+}
 
 function createTweet(tweet, stream, data, socket){
   if(tweet.geo) {
