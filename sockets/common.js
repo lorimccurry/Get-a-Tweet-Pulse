@@ -24,6 +24,7 @@ exports.connection = function(socket){
 
   socket.on('cleartweets', function(){clearTweets(stream, socket)});
 
+  // socket.on('startsearch', function(data){startSearch(data, socket, stream, ??T, ??stream isn't defined for the other fns)});
   socket.on('startsearch', function(data){
     console.log(data);
     var options = [];
