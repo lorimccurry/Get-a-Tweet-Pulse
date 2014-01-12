@@ -3,24 +3,25 @@ include ../mixins/form-helper
 
 
 block content
-  .small-9.columns#map
-    #map-canvas
-  .small-3.columns
-    include form-query
-    #searchStatus.hidden
-      span Searching:
-      h3#queryText
-      span Search status:
-      h5#status
-    #controls.hidden
-      #searchControls
-        h5 Tweet Controls
-        button#stop.small.alert.round Stop
-        button#resume.small.success.radius.round.hidden Resume
-        button#clear.small.round Clear Tweets
-    #stats.hidden
-      span Tweet Count:
-      h3#tweetCounter
-      #scroll
-        //- if tweet
-          p= tweet.screen_name
+  .row#map-row
+    .small-9.columns#map-container
+      #map-canvas
+    .small-3.columns
+      include form-query
+      #searchStatus.hidden
+        span Searching:
+        h3#queryText
+        span Search status:
+        h5#status
+      #controls.hidden
+        #searchControls
+          h5 Tweet Controls
+          button#stop.small.alert.round Stop
+          button#resume.small.success.radius.round.hidden Resume
+          button#clear.small.round Clear Tweets
+      #stats.hidden
+        span Tweet Count:
+        h3#tweetCounter
+        #scroll
+          //- if tweet
+            p= tweet.screen_name
