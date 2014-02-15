@@ -51,7 +51,8 @@ exports.connection = function(socket){
     stream.on('connect', function (request) {
       console.log('CONNECT ATTEMPT');
       socket.emit('twitterconnect', {status: 'Waiting on Twitter'});
-      console.log("emitted")
+      console.log(request);
+      console.log("emitted");
     });
   });
 };
