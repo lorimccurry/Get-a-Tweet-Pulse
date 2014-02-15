@@ -1,7 +1,9 @@
-Get a Twitter Pulse
+Get a Tweet Pulse
 ===================
 
-This is the capstone project for Nashville Software School front end section. It enables the user to search a word, phrase or hashtag and opens a streaming search of the Twitter API. Results with attached geo-coordinates are populated on a Google map.
+This is the capstone project for Nashville Software School front end section. It enables the user to search a word, phrase, hashtag, or open search, and starts a streaming search of the Twitter API. Results with attached geo-coordinates are populated on a Google map.
+
+http://tweetpulse.lorimccurry.com
 
 ==================
 
@@ -22,4 +24,4 @@ Getting it to work for you:
 
 ==================
 
-This project utilizes socket io, node, jade, less, javascript, jQuery, express, foundation 5, grunt, mongoose, mongoDB, Twit (npm twitter dependency), Google maps API, and hosting with amazonaws.
+This project utilizes socket io, node, jade, less, javascript, jQuery, express, foundation 5, grunt, Twit (npm twitter dependency), Google maps API, and hosting with amazonaws.
