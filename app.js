@@ -1,18 +1,11 @@
 var express = require('express');
-var mongoose = require('mongoose');
 var Twit = require('twit');
-
-
-// model definitions
-require('require-dir')('./models');
-var Tweet = mongoose.model('Tweet');
 
 // route definitions
 var tweets = require('./routes/tweets');
 
 var app = express();
 var RedisStore = require('connect-redis')(express);
-mongoose.connect('mongodb://localhost/twitter-map');
 
 // configure express
 require('./config').initialize(app, RedisStore);

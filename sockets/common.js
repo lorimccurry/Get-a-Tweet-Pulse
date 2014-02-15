@@ -1,30 +1,25 @@
 var Twit = require('twit');
 var express = require('express');
-var mongoose = require('mongoose');
-var Tweet = mongoose.model('Tweet');
-
 
 exports.connection = function(socket){
   console.log('THE CONNECTION FUNCTION JUST GOT CALLED!!!!!!');
   var io = this;
   socket.emit('connected', {status: 'connected'});
-
   var T = new Twit({
     consumer_key: process.env.TW_CONSUMER_KEY,
     consumer_secret: process.env.TW_CONSUMER_SEC,
     access_token: process.env.TW_ACCESS_TOKEN,
     access_token_secret: process.env.TW_ACCESS_TKSEC
   });
-
+  socket.emit('connected', {status: 'initialized'});
   var stream = null;
 
-  socket.on('stopsearch', function(){stopSearch(stream, socket)});
+  socket.on('stopsearch', function(){stopSearch(stream, socket);});
 
-  socket.on('resumesearch', function(){resumeSearch(stream, socket)});
+  socket.on('resumesearch', function(){resumeSearch(stream, socket);});
 
-  socket.on('cleartweets', function(){clearTweets(stream, socket)});
+  socket.on('cleartweets', function(){clearTweets(stream, socket);});
 
-  // socket.on('startsearch', function(data){startSearch(data, socket, stream, ??T, ??stream isn't defined for the other fns)});
   socket.on('startsearch', function(data){
     console.log(data);
     var options = [];
@@ -37,7 +32,9 @@ exports.connection = function(socket){
 
     stream = T.stream('statuses/filter', options);
 
-    stream.on('tweet', function (tweet) {createTweet(tweet, stream, data, socket)});
+    stream.on('tweet', function (tweet) {
+      createTweet(tweet, stream, data, socket);
+    });
 
     stream.on('tweet', function (tweet) {
       socket.emit('tweetsreturning', {status: 'Listening for Tweets'});
@@ -53,8 +50,8 @@ exports.connection = function(socket){
 
     stream.on('connect', function (request) {
       console.log('CONNECT ATTEMPT');
-      console.log(request);
       socket.emit('twitterconnect', {status: 'Waiting on Twitter'});
+      console.log("emitted")
     });
   });
 };
@@ -73,19 +70,12 @@ function resumeSearch(stream, socket){
 
 function clearTweets(stream, socket){
   stream.stop();
-  Tweet.remove(function(err, tweets){
-    if (err){
-      console.log('Error clearing db', err);
-    } else {
-      console.log('cleared tweets db');
-      socket.emit('tweetscleared', {status: 'Tweets cleared'});
-    }
-  });
+  socket.emit('tweetscleared', {status: 'Tweets cleared'});
 }
 
 function createTweet(tweet, stream, data, socket){
   if(tweet.geo) {
-    var newTweet = new Tweet({
+    var result = {
       geo: tweet.geo.coordinates,
       screenName: tweet.user.screen_name,
       name: tweet.user.name,
@@ -94,17 +84,9 @@ function createTweet(tweet, stream, data, socket){
       profileImageUrl: tweet.user.profile_image_url,
       placeFullName: tweet.place ? tweet.place.full_name:null,
       query: data.query
-    });
-    newTweet.save(function(err, result){
-
-      // Send to sockets
-      if (err){
-        console.log('Error: ' + err.message);
-      } else {
-        console.log('inserted into database');
-        socket.emit('newTweet', result);
-      }
-    });
+    };
+    socket.emit('newTweet', result);
+    console.log('New Tweet!')
   }
 }
 
